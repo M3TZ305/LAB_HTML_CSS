@@ -140,4 +140,4 @@
 ## BONUS
 - Do a page for a dashboard looking like the following image.
 - Path: `dashboard/"
-<img src="assets/dashboard.png" style="width:100%" />
+<img src="assets/dahsboard.png" style="width:100%" />
