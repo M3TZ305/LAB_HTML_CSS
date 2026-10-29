@@ -1,0 +1,2920 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cyber Dark Slate Dashboard & Logistics OS — Moataz Almutairi</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Chart.js for fully dynamic analytics & AI training graphs -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+      /* ==========================================
+           CYBER OBSIDIAN & SLATE DESIGN SYSTEM
+           ========================================== */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        --bg-base: #090a0f;
+        --bg-surface: #161b22;
+        --bg-surface-hover: #1f242d;
+        --border-glass: #30363d;
+        --text-primary: #f0f6fc;
+        --text-secondary: #8b949e;
+        --accent-cyan: #00f2fe;
+        --accent-indigo: #6366f1;
+        --accent-green: #10b981;
+        --accent-orange: #f59e0b;
+        --accent-red: #ef4444;
+        --gradient-main: linear-gradient(135deg, #00f2fe 0%, #6366f1 100%);
+        --font-main: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+        --font-mono: "JetBrains Mono", monospace;
+        --radius-card: 12px;
+      }
+
+      body {
+        font-family: var(--font-main);
+        background-color: var(--bg-base);
+        color: var(--text-primary);
+        display: flex;
+        height: 100vh;
+        overflow: hidden;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      /* Sidebar Navigation */
+      aside.sidebar {
+        width: 280px;
+        background-color: var(--bg-surface);
+        border-right: 1px solid var(--border-glass);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 1.5rem 1rem;
+        height: 100%;
+        z-index: 10;
+        backdrop-filter: blur(16px);
+      }
+
+      .sidebar-top {
+        display: flex;
+        flex-direction: column;
+        gap: 1.25rem;
+        overflow-y: auto;
+        padding-right: 0.25rem;
+      }
+
+      .sidebar-top::-webkit-scrollbar {
+        width: 4px;
+      }
+
+      .sidebar-top::-webkit-scrollbar-thumb {
+        background: var(--border-glass);
+        border-radius: 4px;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        padding: 0 0.5rem;
+        font-family: var(--font-mono);
+      }
+
+      .brand-icon {
+        width: 38px;
+        height: 38px;
+        background: var(--gradient-main);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #090a0f;
+        font-size: 1.2rem;
+        font-weight: 800;
+        box-shadow: 0 0 15px rgba(0, 242, 254, 0.4);
+      }
+
+      .nav-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+      }
+
+      .nav-label {
+        font-size: 0.7rem;
+        font-weight: 700;
+        color: var(--text-secondary);
+        letter-spacing: 0.08em;
+        padding: 0.5rem;
+        margin-top: 0.5rem;
+        text-transform: uppercase;
+      }
+
+      .nav-item {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.7rem 0.85rem;
+        border-radius: 8px;
+        color: var(--text-secondary);
+        text-decoration: none;
+        font-size: 0.9rem;
+        font-weight: 500;
+        transition: all 0.2s ease;
+        cursor: pointer;
+        border: none;
+        background: none;
+        width: 100%;
+        text-align: left;
+      }
+
+      .nav-item:hover {
+        background-color: var(--bg-surface-hover);
+        color: var(--text-primary);
+      }
+
+      .nav-item.active {
+        background: rgba(0, 242, 254, 0.1);
+        color: var(--accent-cyan);
+        font-weight: 600;
+        border-left: 3px solid var(--accent-cyan);
+      }
+
+      /* Collapsible Dropdown */
+      .nav-dropdown-container {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .sub-nav {
+        display: none;
+        flex-direction: column;
+        gap: 0.15rem;
+        padding-left: 1.75rem;
+        margin-top: 0.25rem;
+        border-left: 1px solid var(--border-glass);
+        margin-left: 1rem;
+      }
+
+      .sub-nav.open {
+        display: flex;
+      }
+
+      .sub-nav-item {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+        background: none;
+        border: none;
+        border-radius: 6px;
+        text-align: left;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+
+      .sub-nav-item:hover {
+        color: var(--text-primary);
+        background-color: var(--bg-surface-hover);
+      }
+
+      .sub-nav-item.active {
+        color: var(--accent-cyan);
+        font-weight: 600;
+      }
+
+      /* Sidebar Bottom */
+      .sidebar-bottom {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        border-top: 1px solid var(--border-glass);
+        padding-top: 1rem;
+      }
+
+      /* User Account Card */
+      .user-card {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.75rem;
+        border-radius: 10px;
+        background-color: rgba(255, 255, 255, 0.03);
+        border: 1px solid var(--border-glass);
+      }
+
+      .user-profile-left {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+
+      .user-avatar {
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        background: var(--bg-surface-hover);
+        border: 2px solid var(--border-glass);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        color: var(--accent-cyan);
+        overflow: hidden;
+      }
+
+      .user-info .name {
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: var(--text-primary);
+      }
+
+      .user-info .role {
+        font-size: 0.75rem;
+        color: var(--text-secondary);
+      }
+
+      .auth-toggle-btn {
+        background: none;
+        border: 1px solid var(--border-glass);
+        color: var(--accent-cyan);
+        padding: 0.35rem 0.65rem;
+        border-radius: 6px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+
+      .auth-toggle-btn:hover {
+        background: rgba(0, 242, 254, 0.15);
+        border-color: var(--accent-cyan);
+      }
+
+      /* Main Content Wrapper */
+      .main-wrapper {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        overflow: hidden;
+        background-color: var(--bg-base);
+      }
+
+      /* Top Bar */
+      header.topbar {
+        background-color: var(--bg-surface);
+        border-bottom: 1px solid var(--border-glass);
+        padding: 1rem 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        min-height: 70px;
+        backdrop-filter: blur(12px);
+      }
+
+      .breadcrumb {
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+        font-weight: 500;
+      }
+
+      .breadcrumb span {
+        color: var(--text-primary);
+        font-weight: 600;
+      }
+
+      .topbar-right {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .search-box {
+        position: relative;
+        width: 280px;
+      }
+
+      .search-box input {
+        width: 100%;
+        padding: 0.55rem 0.75rem 0.55rem 2.25rem;
+        border: 1px solid var(--border-glass);
+        border-radius: 8px;
+        font-size: 0.875rem;
+        background-color: var(--bg-base);
+        color: var(--text-primary);
+        transition: border-color 0.2s;
+      }
+
+      .search-box input:focus {
+        outline: none;
+        border-color: var(--accent-cyan);
+      }
+
+      .search-icon {
+        position: absolute;
+        left: 0.75rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-secondary);
+        font-size: 0.85rem;
+      }
+
+      .btn-ai-insight {
+        background: var(--bg-surface-hover);
+        border: 1px solid var(--border-glass);
+        padding: 0.55rem 1rem;
+        border-radius: 8px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+
+      .btn-ai-insight:hover {
+        border-color: var(--accent-cyan);
+        background: rgba(0, 242, 254, 0.08);
+      }
+
+      .icon-btn {
+        background: var(--bg-surface-hover);
+        border: 1px solid var(--border-glass);
+        width: 38px;
+        height: 38px;
+        border-radius: 8px;
+        font-size: 1.05rem;
+        color: var(--text-secondary);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+      }
+
+      .icon-btn:hover {
+        color: var(--text-primary);
+        border-color: var(--accent-cyan);
+      }
+
+      /* Views Container */
+      .views-container {
+        flex: 1;
+        overflow-y: auto;
+        padding: 2rem;
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+      }
+
+      .view-section {
+        display: none;
+        flex-direction: column;
+        gap: 2rem;
+        animation: fadeIn 0.3s ease-out;
+      }
+
+      .view-section.active {
+        display: flex;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(8px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Page Headers & Action Rows */
+      .page-header-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+
+      .page-title-area h1 {
+        font-size: 1.75rem;
+        font-weight: 800;
+        color: var(--text-primary);
+        margin-bottom: 0.25rem;
+        letter-spacing: -0.02em;
+      }
+
+      .page-title-area p {
+        font-size: 0.95rem;
+        color: var(--text-secondary);
+      }
+
+      .btn-primary-action {
+        background: var(--gradient-main);
+        color: #090a0f;
+        border: none;
+        border-radius: 8px;
+        padding: 0.65rem 1.25rem;
+        font-size: 0.9rem;
+        font-weight: 700;
+        cursor: pointer;
+        box-shadow: 0 4px 15px rgba(0, 242, 254, 0.25);
+        transition:
+          opacity 0.2s,
+          transform 0.1s;
+      }
+
+      .btn-primary-action:hover {
+        opacity: 0.9;
+        transform: translateY(-1px);
+      }
+
+      /* Cards & Grids */
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 1.25rem;
+      }
+
+      .stat-card {
+        background-color: var(--bg-surface);
+        border: 1px solid var(--border-glass);
+        border-radius: var(--radius-card);
+        padding: 1.25rem 1.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        transition:
+          transform 0.2s,
+          border-color 0.2s;
+      }
+
+      .stat-card:hover {
+        transform: translateY(-2px);
+        border-color: var(--accent-cyan);
+      }
+
+      .stat-header {
+        font-size: 0.85rem;
+        font-weight: 500;
+        color: var(--text-secondary);
+      }
+
+      .stat-body {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+      }
+
+      .stat-value {
+        font-size: 1.85rem;
+        font-weight: 800;
+        color: var(--text-primary);
+        font-family: var(--font-mono);
+      }
+
+      .card {
+        background-color: var(--bg-surface);
+        border: 1px solid var(--border-glass);
+        border-radius: var(--radius-card);
+        padding: 1.75rem;
+      }
+
+      /* Carrier Cards */
+      .carrier-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.25rem;
+      }
+
+      .carrier-card {
+        background-color: var(--bg-surface);
+        border: 1px solid var(--border-glass);
+        border-radius: var(--radius-card);
+        padding: 1.25rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        transition: border-color 0.2s;
+      }
+
+      .carrier-card:hover {
+        border-color: var(--accent-cyan);
+      }
+
+      .carrier-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .carrier-info {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+
+      .carrier-icon {
+        width: 40px;
+        height: 40px;
+        background: rgba(0, 242, 254, 0.1);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+      }
+
+      .carrier-name {
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: var(--text-primary);
+      }
+
+      .status-badge {
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+      }
+
+      .status-badge.connected {
+        background-color: rgba(16, 185, 129, 0.15);
+        color: var(--accent-green);
+      }
+
+      .status-badge.syncing {
+        background-color: rgba(0, 242, 254, 0.15);
+        color: var(--accent-cyan);
+      }
+
+      .status-badge.error {
+        background-color: rgba(239, 68, 68, 0.15);
+        color: var(--accent-red);
+      }
+
+      /* Tables & Toolbars */
+      .table-card {
+        background-color: var(--bg-surface);
+        border: 1px solid var(--border-glass);
+        border-radius: var(--radius-card);
+        overflow: hidden;
+      }
+
+      .table-toolbar {
+        padding: 1.25rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid var(--border-glass);
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+
+      .data-table {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: left;
+        font-size: 0.9rem;
+      }
+
+      .data-table th {
+        background-color: rgba(255, 255, 255, 0.02);
+        color: var(--text-secondary);
+        font-weight: 600;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        padding: 1rem 1.25rem;
+        border-bottom: 1px solid var(--border-glass);
+      }
+
+      .data-table td {
+        padding: 1rem 1.25rem;
+        border-bottom: 1px solid var(--border-glass);
+        color: var(--text-primary);
+      }
+
+      .data-table tr:hover {
+        background-color: var(--bg-surface-hover);
+      }
+
+      /* Modals Overlay */
+      .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(6px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+      }
+
+      .modal-overlay.open {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .modal-card {
+        background-color: var(--bg-surface);
+        border: 1px solid var(--border-glass);
+        border-radius: 16px;
+        width: 100%;
+        max-width: 560px;
+        padding: 2.5rem;
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6);
+        transform: translateY(20px);
+        transition: transform 0.3s ease;
+        max-height: 90vh;
+        overflow-y: auto;
+      }
+
+      .modal-overlay.open .modal-card {
+        transform: translateY(0);
+      }
+
+      .form-group {
+        margin-bottom: 1.25rem;
+      }
+
+      .form-group label {
+        display: block;
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: var(--text-secondary);
+        margin-bottom: 0.5rem;
+      }
+
+      .form-group input,
+      .form-group select,
+      .form-group textarea {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        background-color: var(--bg-base);
+        border: 1px solid var(--border-glass);
+        border-radius: 8px;
+        font-size: 0.95rem;
+        color: var(--text-primary);
+      }
+
+      .form-group input:focus,
+      .form-group select:focus,
+      .form-group textarea:focus {
+        outline: none;
+        border-color: var(--accent-cyan);
+      }
+
+      /* Toast notification */
+      .toast-container {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        z-index: 2000;
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+
+      .toast {
+        background-color: var(--bg-surface);
+        border: 1px solid var(--accent-cyan);
+        color: var(--text-primary);
+        padding: 1rem 1.5rem;
+        border-radius: 10px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        font-size: 0.9rem;
+        animation:
+          slideIn 0.3s ease,
+          fadeOut 0.3s ease 2.7s forwards;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateX(50px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      @keyframes fadeOut {
+        to {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+      }
+
+      @media (max-width: 900px) {
+        aside.sidebar {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Toast Container -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="sidebar-top">
+        <div class="brand">
+          <div class="brand-icon">⚡</div>
+          <span>LOGISTICS OS</span>
+        </div>
+
+        <div class="nav-group">
+          <button
+            class="nav-item active"
+            data-view="control-tower"
+            data-title="Control Tower"
+          >
+            📊 Control Tower
+          </button>
+
+          <!-- Generate Quote with Dropdown Sub-options -->
+          <div class="nav-dropdown-container">
+            <button class="nav-item" id="quote-dropdown-toggle">
+              📦 Generate Quote ▾
+            </button>
+            <div class="sub-nav" id="quote-sub-nav">
+              <button
+                class="sub-nav-item"
+                data-view="quote-ocean"
+                data-title="Generate Quote > Ocean Freight"
+              >
+                🚢 Ocean Freight
+              </button>
+              <button
+                class="sub-nav-item"
+                data-view="quote-air"
+                data-title="Generate Quote > Air Cargo"
+              >
+                ✈️ Air Cargo
+              </button>
+              <button
+                class="sub-nav-item"
+                data-view="quote-express"
+                data-title="Generate Quote > Express Courier"
+              >
+                ⚡ Express Courier
+              </button>
+              <button
+                class="sub-nav-item"
+                data-view="quote-custom"
+                data-title="Generate Quote > Custom Solution"
+              >
+                📋 Custom Quote
+              </button>
+            </div>
+          </div>
+
+          <button
+            class="nav-item"
+            data-view="track-shipments"
+            data-title="Track Shipments"
+          >
+            🚚 Track Shipments
+          </button>
+          <button
+            class="nav-item"
+            data-view="ai-console"
+            data-title="AI Console"
+          >
+            🤖 AI Console
+          </button>
+          <button
+            class="nav-item"
+            data-view="customer-portal"
+            data-title="Customer Portal"
+          >
+            👥 Customer Portal
+          </button>
+        </div>
+
+        <div class="nav-group">
+          <span class="nav-label">Insight & Control</span>
+          <button
+            class="nav-item"
+            data-view="documents"
+            data-title="Freight Documents"
+          >
+            📄 Documents
+          </button>
+          <button
+            class="nav-item"
+            data-view="analytics"
+            data-title="Analytics & Telemetry"
+          >
+            📈 Analytics
+          </button>
+          <button
+            class="nav-item"
+            data-view="integrations"
+            data-title="System Integrations"
+          >
+            🔗 Integrations
+          </button>
+          <button
+            class="nav-item"
+            data-view="ai-training"
+            data-title="AI Model Training"
+          >
+            🧠 AI Training
+          </button>
+        </div>
+      </div>
+
+      <!-- Sidebar Bottom: Footer Actions & User Account Card -->
+      <div class="sidebar-bottom">
+        <div class="nav-group">
+          <button
+            class="nav-item"
+            data-view="settings"
+            data-title="System Settings"
+          >
+            ⚙️ Settings
+          </button>
+          <button
+            class="nav-item"
+            data-view="help"
+            data-title="Get Help & Support"
+          >
+            ❓ Get Help
+          </button>
+          <button
+            class="nav-item"
+            data-view="updates"
+            data-title="System Updates"
+          >
+            🔔 Updates
+          </button>
+        </div>
+
+        <!-- User Account Card (Default: Guest / Unauthenticated) -->
+        <div class="user-card" id="user-card-container">
+          <div class="user-profile-left">
+            <div class="user-avatar" id="user-avatar-elem">👤</div>
+            <div class="user-info">
+              <div class="name" id="user-name-elem">Guest User</div>
+              <div class="role" id="user-role-elem">Not Authenticated</div>
+            </div>
+          </div>
+          <button class="auth-toggle-btn" id="auth-action-btn">Login</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Wrapper -->
+    <div class="main-wrapper">
+      <!-- Top Navigation Bar -->
+      <header class="topbar">
+        <div class="breadcrumb">
+          Dashboard &gt; <span id="breadcrumb-current">Control Tower</span>
+        </div>
+        <div class="topbar-right">
+          <div class="search-box">
+            <span class="search-icon">🔍</span>
+            <input
+              type="text"
+              id="global-search-input"
+              placeholder="Search shipments, quotes, APIs..."
+            />
+          </div>
+          <button
+            class="btn-ai-insight"
+            onclick="
+              showToast(
+                'AI Intelligence Engine: All logistics algorithms operating at 99.9% optimal efficiency.',
+              )
+            "
+          >
+            ✨ AI Insight
+          </button>
+          <button
+            class="icon-btn"
+            title="Notifications"
+            onclick="showToast('No new unread system notifications.')"
+          >
+            🔔
+          </button>
+          <button
+            class="icon-btn"
+            title="Messages"
+            onclick="showToast('Secure messaging gateway connected.')"
+          >
+            💬
+          </button>
+        </div>
+      </header>
+
+      <!-- Dynamic Views Container -->
+      <div class="views-container">
+        <!-- 1. CONTROL TOWER VIEW -->
+        <section id="view-control-tower" class="view-section active">
+          <div class="page-header-row">
+            <div class="page-title-area">
+              <h1>Control Tower</h1>
+              <p>
+                Real-time telemetry, active logistics nodes, and carrier fleet
+                telemetry
+              </p>
+            </div>
+            <div style="display: flex; gap: 1rem">
+              <button
+                class="btn-primary-action"
+                style="
+                  background: var(--bg-surface-hover);
+                  color: var(--text-primary);
+                  border: 1px solid var(--border-glass);
+                "
+                onclick="toggleEmergencyBypass()"
+                id="emergency-btn"
+              >
+                Emergency Bypass: OFF
+              </button>
+              <button
+                class="btn-primary-action"
+                onclick="switchView('track-shipments', 'Track Shipments')"
+              >
+                + Dispatch New Shipment
+              </button>
+            </div>
+          </div>
+
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-header">Active Shipments</div>
+              <div class="stat-body">
+                <div class="stat-value" id="stat-active-shipments">1,284</div>
+                <span
+                  style="
+                    color: var(--accent-green);
+                    font-size: 0.85rem;
+                    font-weight: 600;
+                  "
+                  >+12.4% this week</span
+                >
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-header">API Latency Monitor</div>
+              <div class="stat-body">
+                <div class="stat-value" id="stat-latency">24ms</div>
+                <span
+                  style="
+                    color: var(--accent-cyan);
+                    font-size: 0.85rem;
+                    font-weight: 600;
+                  "
+                  >Optimal</span
+                >
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-header">Customs Clearance Rate</div>
+              <div class="stat-body">
+                <div class="stat-value">99.4%</div>
+                <span
+                  style="
+                    color: var(--accent-green);
+                    font-size: 0.85rem;
+                    font-weight: 600;
+                  "
+                  >Verified</span
+                >
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-header">System Health (CPU / RAM)</div>
+              <div class="stat-body">
+                <div class="stat-value" id="stat-cpu">18%</div>
+                <span
+                  style="
+                    color: var(--accent-indigo);
+                    font-size: 0.85rem;
+                    font-weight: 600;
+                  "
+                  id="stat-ram"
+                  >RAM: 4.2GB</span
+                >
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div
+              style="
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 1rem;
+              "
+            >
+              <h3>Carrier Telemetry Status</h3>
+              <div style="display: flex; gap: 1rem; align-items: center">
+                <label
+                  style="
+                    font-size: 0.85rem;
+                    color: var(--text-secondary);
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                    cursor: pointer;
+                  "
+                >
+                  <input
+                    type="checkbox"
+                    id="auto-refresh-toggle"
+                    checked
+                    onchange="toggleAutoRefresh(this)"
+                    style="accent-color: var(--accent-cyan)"
+                  />
+                  Live Telemetry Auto-Refresh
+                </label>
+                <button
+                  class="btn-primary-action"
+                  style="padding: 0.4rem 0.8rem; font-size: 0.8rem"
+                  onclick="pingAllCarriers()"
+                >
+                  Ping All APIs
+                </button>
+              </div>
+            </div>
+            <div class="carrier-grid" id="carrier-grid-container">
+              <div class="carrier-card">
+                <div class="carrier-header">
+                  <div class="carrier-info">
+                    <div class="carrier-icon">🚢</div>
+                    <div class="carrier-name">Maersk Ocean Gateway</div>
+                  </div>
+                  <span class="status-badge connected">✔ Connected</span>
+                </div>
+                <p style="font-size: 0.875rem; color: var(--text-secondary)">
+                  Real-time vessel tracking and automated container manifests.
+                </p>
+                <div
+                  style="
+                    font-size: 0.75rem;
+                    color: var(--accent-cyan);
+                    font-family: var(--font-mono);
+                    margin-top: 0.5rem;
+                  "
+                >
+                  Latency: 24ms | Uptime: 99.98%
+                </div>
+              </div>
+              <div class="carrier-card">
+                <div class="carrier-header">
+                  <div class="carrier-info">
+                    <div class="carrier-icon">✈️</div>
+                    <div class="carrier-name">Global Air Cargo API</div>
+                  </div>
+                  <span class="status-badge syncing">🔄 Syncing</span>
+                </div>
+                <p style="font-size: 0.875rem; color: var(--text-secondary)">
+                  Airway bill batch synchronization in progress.
+                </p>
+                <div
+                  style="
+                    font-size: 0.75rem;
+                    color: var(--accent-cyan);
+                    font-family: var(--font-mono);
+                    margin-top: 0.5rem;
+                  "
+                >
+                  Latency: 42ms | Uptime: 99.91%
+                </div>
+              </div>
+              <div class="carrier-card">
+                <div class="carrier-header">
+                  <div class="carrier-info">
+                    <div class="carrier-icon">🚛</div>
+                    <div class="carrier-name">GCC Overland Freight</div>
+                  </div>
+                  <span class="status-badge connected">✔ Connected</span>
+                </div>
+                <p style="font-size: 0.875rem; color: var(--text-secondary)">
+                  Cross-border truck GPS telemetry and geofencing active.
+                </p>
+                <div
+                  style="
+                    font-size: 0.75rem;
+                    color: var(--accent-cyan);
+                    font-family: var(--font-mono);
+                    margin-top: 0.5rem;
+                  "
+                >
+                  Latency: 18ms | Uptime: 100%
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 2. GENERATE QUOTE VIEWS -->
+        <section id="view-quote-ocean" class="view-section">
+          <div class="page-header-row">
+            <div class="page-title-area">
+              <h1>Generate Quote: Ocean Freight</h1>
+              <p>
+                Calculate instant container shipping rates across international
+                maritime corridors
+              </p>
+            </div>
+          </div>
+          <div class="card" style="max-width: 700px">
+            <form id="ocean-quote-form">
+              <div class="form-group">
+                <label>Origin Port</label>
+                <input
+                  type="text"
+                  id="ocean-origin"
+                  value="Jeddah Islamic Port (SAJED)"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label>Destination Port</label>
+                <input
+                  type="text"
+                  id="ocean-destination"
+                  value="Port of Rotterdam (NLRTM)"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label>Container Type & Base Rate</label>
+                <select id="ocean-container">
+                  <option value="4250">
+                    20ft Standard Dry Container (TEU) - $4,250
+                  </option>
+                  <option value="6800">
+                    40ft High Cube Container (FEU) - $6,800
+                  </option>
+                  <option value="9500">
+                    Reefer Container (Temperature Controlled) - $9,500
+                  </option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label
+                  >Service Duration / Priority:
+                  <span id="ocean-slider-val">14</span> Days</label
+                >
+                <input
+                  type="range"
+                  id="ocean-duration"
+                  min="5"
+                  max="30"
+                  value="14"
+                  style="width: 100%; accent-color: var(--accent-cyan)"
+                  oninput="
+                    document.getElementById('ocean-slider-val').textContent =
+                      this.value
+                  "
+                />
+              </div>
+              <div class="form-group">
+                <label>Currency</label>
+                <select id="ocean-currency">
+                  <option value="USD">USD ($)</option>
+                  <option value="EUR">EUR (€)</option>
+                  <option value="SAR">SAR (﷼)</option>
+                </select>
+              </div>
+              <button type="submit" class="btn-primary-action">
+                Calculate & Export Quote Summary
+              </button>
+            </form>
+            <div
+              id="ocean-quote-result"
+              style="
+                margin-top: 1.5rem;
+                display: none;
+                padding: 1rem;
+                background: var(--bg-base);
+                border: 1px solid var(--accent-cyan);
+                border-radius: 8px;
+              "
+            ></div>
+          </div>
+        </section>
+
+        <section id="view-quote-air" class="view-section">
+          <div class="page-header-row">
+            <div class="page-title-area">
+              <h1>Generate Quote: Air Cargo</h1>
+              <p>
+                High-priority air freight booking and airway bill calculation
+              </p>
+            </div>
+          </div>
+          <div class="card" style="max-width: 700px">
+            <form id="air-quote-form">
+              <div class="form-group">
+                <label>Origin Airport</label>
+                <input
+                  type="text"
+                  id="air-origin"
+                  value="King Abdulaziz International Airport (JED)"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label>Destination Airport</label>
+                <input
+                  type="text"
+                  id="air-destination"
+                  value="Frankfurt Airport (FRA)"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label>Total Cargo Weight (KG)</label>
+                <input type="number" id="air-weight" value="1250" required />
+              </div>
+              <button type="submit" class="btn-primary-action">
+                Calculate Air Freight Quote
+              </button>
+            </form>
+            <div
+              id="air-quote-result"
+              style="
+                margin-top: 1.5rem;
+                display: none;
+                padding: 1rem;
+                background: var(--bg-base);
+                border: 1px solid var(--accent-cyan);
+                border-radius: 8px;
+              "
+            ></div>
+          </div>
+        </section>
+
+        <section id="view-quote-express" class="view-section">
+          <div class="page-header-row">
+            <div class="page-title-area">
+              <h1>Generate Quote: Express Courier</h1>
+              <p>Door-to-door express parcel delivery pricing</p>
+            </div>
+          </div>
+          <div class="card" style="max-width: 700px">
+            <form id="express-quote-form">
+              <div class="form-group">
+                <label>Pickup Address</label>
+                <input
+                  type="text"
+                  id="express-pickup"
+                  value="Madinah Tech Park, Madinah, KSA"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label>Delivery Address</label>
+                <input
+                  type="text"
+                  id="express-delivery"
+                  value="Silicon Valley, California, USA"
+                  required
+                />
+              </div>
+              <button type="submit" class="btn-primary-action">
+                Calculate Express Courier Quote
+              </button>
+            </form>
+            <div
+              id="express-quote-result"
+              style="
+                margin-top: 1.5rem;
+                display: none;
+                padding: 1rem;
+                background: var(--bg-base);
+                border: 1px solid var(--accent-cyan);
+                border-radius: 8px;
+              "
+            ></div>
+          </div>
+        </section>
+
+        <section id="view-quote-custom" class="view-section">
+          <div class="page-header-row">
+            <div class="page-title-area">
+              <h1>Generate Quote: Custom Solution</h1>
+              <p>
+                Tailored enterprise logistics and multimodality contract
+                generation
+              </p>
+            </div>
+          </div>
+          <div class="card" style="max-width: 700px">
+            <form
+              onsubmit="
+                event.preventDefault();
+                showToast(
+                  'Custom enterprise quote request #ENT-992 dispatched.',
+                );
+                document.getElementById('custom-msg').style.display = 'block';
+              "
+            >
+              <div class="form-group">
+                <label>Company Name</label>
+                <input
+                  type="text"
+                  placeholder="e.g. Al-Madinah Global Trade"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label>Project Scope & Requirements</label>
+                <textarea
+                  rows="4"
+                  style="
+                    width: 100%;
+                    padding: 0.75rem;
+                    background: var(--bg-base);
+                    border: 1px solid var(--border-glass);
+                    border-radius: 8px;
+                    color: var(--text-primary);
+                  "
+                  placeholder="Describe custom supply chain specifications..."
+                  required
+                ></textarea>
+              </div>
+              <button type="submit" class="btn-primary-action">
+                Submit Custom Quote Inquiry
+              </button>
+            </form>
+            <div
+              id="custom-msg"
+              style="
+                margin-top: 1rem;
+                display: none;
+                color: var(--accent-green);
+                font-weight: 600;
+              "
+            >
+              ✔ Inquiry successfully received. An enterprise account manager
+              will respond within 2 hours.
+            </div>
+          </div>
+        </section>
+
+        <!-- 3. TRACK SHIPMENTS VIEW -->
+        <section id="view-track-shipments" class="view-section">
+          <div class="page-header-row">
+            <div class="page-title-area">
+              <h1>Track Shipments</h1>
+              <p>Real-time geolocational tracking and status monitoring</p>
+            </div>
+            <button class="btn-primary-action" onclick="openNewShipmentModal()">
+              + Add Shipment
+            </button>
+          </div>
+          <div class="table-card">
+            <div class="table-toolbar">
+              <div style="display: flex; gap: 0.5rem; flex-wrap: wrap">
+                <button
+                  class="auth-toggle-btn active"
+                  onclick="filterShipmentsStatus('all', this)"
+                >
+                  All
+                </button>
+                <button
+                  class="auth-toggle-btn"
+                  onclick="filterShipmentsStatus('In Transit', this)"
+                >
+                  In Transit
+                </button>
+                <button
+                  class="auth-toggle-btn"
+                  onclick="filterShipmentsStatus('Customs Processing', this)"
+                >
+                  Customs
+                </button>
+                <button
+                  class="auth-toggle-btn"
+                  onclick="filterShipmentsStatus('Delivered', this)"
+                >
+                  Delivered
+                </button>
+              </div>
+              <input
+                type="text"
+                id="shipment-search"
+                placeholder="Search tracking ID or destination..."
+                style="
+                  padding: 0.45rem 0.75rem;
+                  background: var(--bg-base);
+                  border: 1px solid var(--border-glass);
+                  border-radius: 6px;
+                  color: var(--text-primary);
+                  width: 260px;
+                "
+                oninput="filterShipments()"
+              />
+            </div>
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Tracking ID</th>
+                  <th>Route</th>
+                  <th>Carrier</th>
+                  <th>Status</th>
+                  <th style="text-align: right">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="shipments-tbody">
+                <!-- Populated dynamically via JS -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- 4. AI CONSOLE VIEW -->
+        <section id="view-ai-console" class="view-section">
+          <div class="page-header-row">
+            <div class="page-title-area">
+              <h1>AI Console</h1>
+              <p>
+                Autonomous logistics route optimization and predictive
+                bottleneck analysis
+              </p>
+            </div>
+          </div>
+          <div class="card">
+            <h3>Autonomous Diagnostic Engine</h3>
+            <p style="color: var(--text-secondary); margin-bottom: 1.5rem">
+              The AI agent continuously scans shipping routes, customs transit
+              times, and weather patterns to minimize delivery delays.
+            </p>
+
+            <div
+              style="
+                display: flex;
+                gap: 1rem;
+                margin-bottom: 1rem;
+                flex-wrap: wrap;
+              "
+            >
+              <div style="flex: 1; min-width: 220px">
+                <label
+                  style="
+                    font-size: 0.8rem;
+                    color: var(--text-secondary);
+                    margin-bottom: 0.25rem;
+                    display: block;
+                  "
+                  >Select AI Model</label
+                >
+                <select
+                  id="ai-model-select"
+                  style="
+                    width: 100%;
+                    padding: 0.5rem;
+                    background: var(--bg-base);
+                    border: 1px solid var(--border-glass);
+                    border-radius: 6px;
+                    color: var(--text-primary);
+                  "
+                >
+                  <option>FreightX-Optimizer-v4 (Recommended)</option>
+                  <option>Claude 3.5 Sonnet (Logistics Specialised)</option>
+                  <option>GPT-4o Multi-Modal Route Core</option>
+                </select>
+              </div>
+              <div style="width: 180px">
+                <label
+                  style="
+                    font-size: 0.8rem;
+                    color: var(--text-secondary);
+                    margin-bottom: 0.25rem;
+                    display: block;
+                  "
+                  >Temperature: <span id="temp-val">0.3</span></label
+                >
+                <input
+                  type="range"
+                  id="ai-temp-slider"
+                  min="0"
+                  max="1"
+                  step="0.1"
+                  value="0.3"
+                  style="
+                    width: 100%;
+                    margin-top: 0.5rem;
+                    accent-color: var(--accent-cyan);
+                  "
+                  oninput="
+                    document.getElementById('temp-val').textContent = this.value
+                  "
+                />
+              </div>
+            </div>
+
+            <div
+              style="
+                background: var(--bg-base);
+                padding: 1.25rem;
+                border-radius: 8px;
+                border: 1px solid var(--border-glass);
+                font-family: var(--font-mono);
+                font-size: 0.9rem;
+                color: var(--accent-cyan);
+                line-height: 1.6;
+                max-height: 200px;
+                overflow-y: auto;
+              "
+              id="ai-terminal-log"
+            >
+              [SYSTEM OK] AI Route Optimizer active.<br />
+              [INFO] 45 active freight connections monitored in real-time.<br />
+              [RECOMMENDATION] Reroute shipment #TRK-8821 via alternative
+              corridor for 4.2h time savings.
+            </div>
+            <div style="margin-top: 1.25rem; display: flex; gap: 1rem">
+              <input
+                type="text"
+                id="ai-prompt-input"
+                placeholder="Ask AI Assistant (e.g. Optimize shipping route to Madinah)..."
+                style="
+                  flex: 1;
+                  padding: 0.65rem 1rem;
+                  background: var(--bg-base);
+                  border: 1px solid var(--border-glass);
+                  border-radius: 8px;
+                  color: var(--text-primary);
+                "
+              />
+              <button class="btn-primary-action" onclick="runAIPrompt()">
+                Run AI Prompt
+              </button>
+              <button
+                class="btn-primary-action"
+                style="
+                  background: var(--bg-surface-hover);
+                  color: var(--text-primary);
+                  border: 1px solid var(--border-glass);
+                "
+                onclick="clearAIChat()"
+              >
+                Clear
+              </button>
+            </div>
+            <div
+              id="ai-response-output"
+              style="
+                margin-top: 1rem;
+                font-family: var(--font-mono);
+                font-size: 0.85rem;
+                color: var(--text-secondary);
+              "
+            ></div>
+          </div>
+        </section>
+
+        <!-- 5. CUSTOMER PORTAL VIEW -->
+        <section id="view-customer-portal" class="view-section">
+          <div class="page-header-row">
+            <div class="page-title-area">
+              <h1>Customer Portal</h1>
+              <p>Enterprise client management and support ticket dispatch</p>
+            </div>
+            <button class="btn-primary-action" onclick="openNewClientModal()">
+              + Add Enterprise Client
+            </button>
+          </div>
+          <div class="card">
+            <div
+              style="
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 1rem;
+              "
+            >
+              <h3>Active Enterprise Clients</h3>
+              <input
+                type="text"
+                id="client-search"
+                placeholder="Search clients..."
+                style="
+                  padding: 0.4rem 0.75rem;
+                  background: var(--bg-base);
+                  border: 1px solid var(--border-glass);
+                  border-radius: 6px;
+                  color: var(--text-primary);
+                  width: 220px;
+                "
+                oninput="filterClients()"
+              />
+            </div>
+            <ul
+              class="list-items"
+              id="clients-list"
+              style="
+                list-style: none;
+                display: flex;
+                flex-direction: column;
+                gap: 0.75rem;
+              "
+            >
+              <!-- Populated dynamically via JS -->
+            </ul>
+          </div>
+        </section>
+
+        <!-- 6. DOCUMENTS VIEW -->
+        <section id="view-documents" class="view-section">
+          <div class="page-header-row">
+            <div class="page-title-area">
+              <h1>Freight Documents Repository</h1>
+              <p>
+                Bills of lading, customs declarations, and compliance
+                certificates
+              </p>
+            </div>
+            <button class="btn-primary-action" onclick="simulateFileUpload()">
+              + Upload Manifest
+            </button>
+          </div>
+          <div class="card">
+            <div
+              style="
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 1rem;
+              "
+            >
+              <h3>Recent Digital Manifests</h3>
+              <input
+                type="text"
+                id="doc-search"
+                placeholder="Search documents..."
+                style="
+                  padding: 0.4rem 0.75rem;
+                  background: var(--bg-base);
+                  border: 1px solid var(--border-glass);
+                  border-radius: 6px;
+                  color: var(--text-primary);
+                  width: 220px;
+                "
+                oninput="filterDocuments()"
+              />
+            </div>
+            <ul
+              id="doc-list"
+              style="
+                list-style: none;
+                display: flex;
+                flex-direction: column;
+                gap: 0.75rem;
+              "
+            >
+              <!-- Populated dynamically via JS -->
+            </ul>
+          </div>
+        </section>
+
+        <!-- 7. ANALYTICS VIEW -->
+        <section id="view-analytics" class="view-section">
+          <div class="page-header-row">
+            <div class="page-title-area">
+              <h1>Analytics & Telemetry</h1>
+              <p>
+                Freight volume, throughput efficiency, and API uptime metrics
+              </p>
+            </div>
+            <div style="display: flex; gap: 0.5rem">
+              <button
+                class="auth-toggle-btn active"
+                onclick="updateAnalyticsRange('7d', this)"
+              >
+                7D
+              </button>
+              <button
+                class="auth-toggle-btn"
+                onclick="updateAnalyticsRange('30d', this)"
+              >
+                30D
+              </button>
+              <button
+                class="auth-toggle-btn"
+                onclick="updateAnalyticsRange('1y', this)"
+              >
+                1Y
+              </button>
+            </div>
+          </div>
+          <div class="card">
+            <h3 id="analytics-chart-title">
+              Weekly Freight Throughput (TEU Containers)
+            </h3>
+            <div style="height: 280px; margin-top: 1.5rem">
+              <canvas id="analyticsChart"></canvas>
+            </div>
+          </div>
+        </section>
+
+        <!-- 8. INTEGRATIONS VIEW -->
+        <section id="view-integrations" class="view-section">
+          <div class="page-header-row">
+            <div class="page-title-area">
+              <h1>System Integrations</h1>
+              <p>
+                Manage, search, sort, and configure third-party enterprise
+                connections
+              </p>
+            </div>
+            <button
+              class="btn-primary-action"
+              onclick="showToast('Integration connector wizard opened.')"
+            >
+              + Add Integration
+            </button>
+          </div>
+          <div class="table-card">
+            <div class="table-toolbar">
+              <h3>Connected Services & APIs</h3>
+              <input
+                type="text"
+                id="integrations-search"
+                placeholder="Search integrations..."
+                style="
+                  padding: 0.45rem 0.75rem;
+                  background: var(--bg-base);
+                  border: 1px solid var(--border-glass);
+                  border-radius: 6px;
+                  color: var(--text-primary);
+                  width: 240px;
+                "
+                oninput="filterIntegrations()"
+              />
+            </div>
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Service Name</th>
+                  <th>Category</th>
+                  <th>Status</th>
+                  <th style="text-align: right">Toggle / Configure</th>
+                </tr>
+              </thead>
+              <tbody id="integrations-tbody">
+                <!-- Populated dynamically via JS -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- 9. AI TRAINING VIEW -->
+        <section id="view-ai-training" class="view-section">
+          <div class="page-header-row">
+            <div class="page-title-area">
+              <h1>AI Model Training & Fine-Tuning</h1>
+              <p>
+                Custom neural network weights for port congestion prediction
+              </p>
+            </div>
+            <button class="btn-primary-action" onclick="startAiTraining()">
+              Start Training Run
+            </button>
+          </div>
+          <div class="card">
+            <h3>Model Hyperparameters & Training Loss</h3>
+            <div
+              style="
+                display: grid;
+                grid-template-columns: 1fr 2fr;
+                gap: 2rem;
+                margin-top: 1.5rem;
+              "
+            >
+              <div
+                style="
+                  font-family: var(--font-mono);
+                  font-size: 0.9rem;
+                  color: var(--text-secondary);
+                  display: flex;
+                  flex-direction: column;
+                  gap: 1rem;
+                "
+              >
+                <div>Architecture: Transformer-XL Freight Core</div>
+                <div>
+                  Epochs Completed: <span id="training-epoch">42</span> / 100
+                </div>
+                <div>
+                  Validation Loss:
+                  <span id="training-loss" style="color: var(--accent-cyan)"
+                    >0.0142 (Optimal)</span
+                  >
+                </div>
+                <div>
+                  <label
+                    style="
+                      display: block;
+                      font-size: 0.8rem;
+                      margin-bottom: 0.25rem;
+                    "
+                    >Learning Rate</label
+                  >
+                  <input
+                    type="text"
+                    value="0.00015"
+                    id="learning-rate-input"
+                    style="
+                      padding: 0.4rem;
+                      background: var(--bg-base);
+                      border: 1px solid var(--border-glass);
+                      border-radius: 6px;
+                      color: var(--text-primary);
+                      font-size: 0.85rem;
+                      width: 100%;
+                    "
+                  />
+                </div>
+              </div>
+              <div style="height: 220px">
+                <canvas id="trainingChart"></canvas>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 10. SETTINGS VIEW -->
+        <section id="view-settings" class="view-section">
+          <div class="page-header-row">
+            <div class="page-title-area">
+              <h1>System Settings</h1>
+              <p>
+                Configure credentials, notification triggers, and interface
+                preferences
+              </p>
+            </div>
+          </div>
+          <div class="card" style="max-width: 700px">
+            <h3>General Preferences</h3>
+            <div
+              style="
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 1rem 0;
+                border-bottom: 1px solid var(--border-glass);
+              "
+            >
+              <div>
+                <div style="font-weight: 600">
+                  Email Alerts for System Errors
+                </div>
+                <div style="font-size: 0.85rem; color: var(--text-secondary)">
+                  Receive instant notifications upon API failures
+                </div>
+              </div>
+              <input
+                type="checkbox"
+                checked
+                style="
+                  width: 20px;
+                  height: 20px;
+                  accent-color: var(--accent-cyan);
+                "
+                onchange="showToast('Preference updated.')"
+              />
+            </div>
+            <div
+              style="
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 1rem 0;
+              "
+            >
+              <div>
+                <div style="font-weight: 600">
+                  Autonomous AI Route Adjustments
+                </div>
+                <div style="font-size: 0.85rem; color: var(--text-secondary)">
+                  Allow AI agents to autonomously adjust shipment waypoints
+                </div>
+              </div>
+              <input
+                type="checkbox"
+                checked
+                style="
+                  width: 20px;
+                  height: 20px;
+                  accent-color: var(--accent-cyan);
+                "
+                onchange="showToast('Preference updated.')"
+              />
+            </div>
+          </div>
+        </section>
+
+        <!-- 11. GET HELP VIEW -->
+        <section id="view-help" class="view-section">
+          <div class="page-header-row">
+            <div class="page-title-area">
+              <h1>Get Help & Support</h1>
+              <p>24/7 technical documentation and engineering assistance</p>
+            </div>
+          </div>
+          <div class="card" style="max-width: 700px">
+            <h3>Engineering Support Desk</h3>
+            <p
+              style="
+                color: var(--text-secondary);
+                margin-top: 0.5rem;
+                margin-bottom: 1.25rem;
+              "
+            >
+              Need immediate assistance with API integrations or custom tool
+              deployments? Contact lead developer Moataz Almutairi or dispatch a
+              priority support ticket below.
+            </p>
+            <form
+              onsubmit="
+                event.preventDefault();
+                showToast(
+                  'Priority support ticket #SUP-991 dispatched successfully.',
+                );
+              "
+            >
+              <div class="form-group">
+                <label>Issue Description</label>
+                <textarea
+                  rows="3"
+                  placeholder="Describe technical inquiry..."
+                  style="
+                    width: 100%;
+                    padding: 0.75rem;
+                    background: var(--bg-base);
+                    border: 1px solid var(--border-glass);
+                    border-radius: 8px;
+                    color: var(--text-primary);
+                  "
+                  required
+                ></textarea>
+              </div>
+              <button type="submit" class="btn-primary-action">
+                Open Support Ticket
+              </button>
+            </form>
+          </div>
+        </section>
+
+        <!-- 12. UPDATES VIEW -->
+        <section id="view-updates" class="view-section">
+          <div class="page-header-row">
+            <div class="page-title-area">
+              <h1>System Updates & Release Log</h1>
+              <p>Latest platform enhancements and feature rollouts</p>
+            </div>
+          </div>
+          <div class="card" style="max-width: 700px">
+            <h3>v3.4.0 Release Notes (October 2026)</h3>
+            <ul
+              class="list-items"
+              style="
+                list-style: none;
+                display: flex;
+                flex-direction: column;
+                gap: 0.75rem;
+                margin-top: 1rem;
+              "
+            >
+              <li>
+                ✨ Integrated Chart.js telemetry visualization in Control Tower
+                & Analytics.
+              </li>
+              <li>⚡ Enhanced AI Console prompt execution speed by 40%.</li>
+              <li>
+                🔒 Upgraded authentication gateway with role-based developer
+                permissions for Moataz Almutairi.
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- Login / Authentication Modal -->
+    <div class="modal-overlay" id="auth-modal">
+      <div class="modal-card">
+        <h3 style="margin-bottom: 1rem">Authenticate User Session</h3>
+        <p
+          style="
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+          "
+        >
+          Log in to access full developer and control tower capabilities as
+          Moataz Almutairi.
+        </p>
+        <form id="login-form">
+          <div class="form-group">
+            <label>Username / Email</label>
+            <input
+              type="text"
+              id="login-user"
+              value="moataz@portfolio.dev"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label>Security Key</label>
+            <input
+              type="password"
+              id="login-pass"
+              value="••••••••••••"
+              required
+            />
+          </div>
+          <div
+            style="
+              display: flex;
+              justify-content: flex-end;
+              gap: 1rem;
+              margin-top: 1.5rem;
+            "
+          >
+            <button
+              type="button"
+              class="btn-primary-action"
+              style="
+                background: var(--bg-surface-hover);
+                color: var(--text-primary);
+                border: 1px solid var(--border-glass);
+              "
+              onclick="closeAuthModal()"
+            >
+              Cancel
+            </button>
+            <button type="submit" class="btn-primary-action">
+              Login as Moataz
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Telemetry Modal -->
+    <div class="modal-overlay" id="telemetry-modal">
+      <div class="modal-card">
+        <h3 id="telemetry-modal-title" style="margin-bottom: 1rem">
+          Shipment Telemetry
+        </h3>
+        <div
+          id="telemetry-modal-content"
+          style="
+            font-family: var(--font-mono);
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+          "
+        >
+          <!-- Populated dynamically -->
+        </div>
+        <div
+          style="display: flex; justify-content: flex-end; margin-top: 1.5rem"
+        >
+          <button class="btn-primary-action" onclick="closeTelemetryModal()">
+            Close Telemetry
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add Shipment Modal -->
+    <div class="modal-overlay" id="shipment-modal">
+      <div class="modal-card">
+        <h3 style="margin-bottom: 1rem">Dispatch New Shipment</h3>
+        <form id="new-shipment-form">
+          <div class="form-group">
+            <label>Tracking ID</label>
+            <input type="text" id="new-trk-id" value="#TRK-9988" required />
+          </div>
+          <div class="form-group">
+            <label>Route</label>
+            <input
+              type="text"
+              id="new-trk-route"
+              value="Jeddah ➔ Hamburg"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label>Carrier</label>
+            <input
+              type="text"
+              id="new-trk-carrier"
+              value="Maersk Line"
+              required
+            />
+          </div>
+          <div
+            style="
+              display: flex;
+              justify-content: flex-end;
+              gap: 1rem;
+              margin-top: 1.5rem;
+            "
+          >
+            <button
+              type="button"
+              class="btn-primary-action"
+              style="
+                background: var(--bg-surface-hover);
+                color: var(--text-primary);
+                border: 1px solid var(--border-glass);
+              "
+              onclick="closeNewShipmentModal()"
+            >
+              Cancel
+            </button>
+            <button type="submit" class="btn-primary-action">
+              Dispatch Shipment
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Add Client Modal -->
+    <div class="modal-overlay" id="client-modal">
+      <div class="modal-card">
+        <h3 style="margin-bottom: 1rem">Add Enterprise Client</h3>
+        <form id="new-client-form">
+          <div class="form-group">
+            <label>Company Name</label>
+            <input
+              type="text"
+              id="new-client-name"
+              placeholder="e.g. Red Sea Logistics"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label>Tier / Plan</label>
+            <select id="new-client-tier">
+              <option>Tier 1 Enterprise</option>
+              <option>Tier 2 Partner</option>
+              <option>Tier 3 Standard</option>
+            </select>
+          </div>
+          <div
+            style="
+              display: flex;
+              justify-content: flex-end;
+              gap: 1rem;
+              margin-top: 1.5rem;
+            "
+          >
+            <button
+              type="button"
+              class="btn-primary-action"
+              style="
+                background: var(--bg-surface-hover);
+                color: var(--text-primary);
+                border: 1px solid var(--border-glass);
+              "
+              onclick="closeNewClientModal()"
+            >
+              Cancel
+            </button>
+            <button type="submit" class="btn-primary-action">
+              Save Client
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+      // Toast Notification System
+      function showToast(message) {
+        const container = document.getElementById("toast-container");
+        const toast = document.createElement("div");
+        toast.className = "toast";
+        toast.innerHTML = `<span>⚡</span> <span>${message}</span>`;
+        container.appendChild(toast);
+        setTimeout(() => toast.remove(), 3000);
+      }
+
+      // Authentication State Management
+      let isAuthenticated = false;
+
+      const authActionBtn = document.getElementById("auth-action-btn");
+      const authModal = document.getElementById("auth-modal");
+      const userNameElem = document.getElementById("user-name-elem");
+      const userRoleElem = document.getElementById("user-role-elem");
+      const userAvatarElem = document.getElementById("user-avatar-elem");
+      const loginForm = document.getElementById("login-form");
+
+      function openAuthModal() {
+        if (!isAuthenticated) {
+          authModal.classList.add("open");
+        } else {
+          isAuthenticated = false;
+          userNameElem.textContent = "Guest User";
+          userRoleElem.textContent = "Not Authenticated";
+          userAvatarElem.textContent = "👤";
+          authActionBtn.textContent = "Login";
+          showToast("Logged out successfully. Session is now Guest mode.");
+        }
+      }
+
+      function closeAuthModal() {
+        authModal.classList.remove("open");
+      }
+
+      authActionBtn.addEventListener("click", openAuthModal);
+
+      loginForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        isAuthenticated = true;
+        userNameElem.textContent = "Moataz Almutairi";
+        userRoleElem.textContent = "CS Developer & Tool Specialist";
+        userAvatarElem.innerHTML =
+          '<span style="font-size:0.8rem; font-weight:700; color:var(--accent-cyan);">MA</span>';
+        authActionBtn.textContent = "Logout";
+        closeAuthModal();
+        showToast(
+          "Authenticated successfully as Moataz Almutairi (Computer Science Developer & Tool Specialist).",
+        );
+      });
+
+      // Control Tower Live Telemetry & Emergency Bypass
+      let emergencyBypassActive = false;
+      let autoRefreshInterval = null;
+
+      function toggleEmergencyBypass() {
+        emergencyBypassActive = !emergencyBypassActive;
+        const btn = document.getElementById("emergency-btn");
+        if (emergencyBypassActive) {
+          btn.style.background = "var(--accent-red)";
+          btn.style.color = "#fff";
+          btn.textContent = "Emergency Bypass: ACTIVE";
+          showToast(
+            "⚠️ EMERGENCY BYPASS ENGAGED: All security restrictions overridden.",
+          );
+        } else {
+          btn.style.background = "var(--bg-surface-hover)";
+          btn.style.color = "var(--text-primary)";
+          btn.textContent = "Emergency Bypass: OFF";
+          showToast("Emergency bypass disengaged.");
+        }
+      }
+
+      function toggleAutoRefresh(checkbox) {
+        if (checkbox.checked) {
+          showToast("Live telemetry auto-refresh enabled (every 5s).");
+          autoRefreshInterval = setInterval(() => {
+            const cpu = Math.floor(15 + Math.random() * 10);
+            const latency = Math.floor(18 + Math.random() * 12);
+            document.getElementById("stat-cpu").textContent = cpu + "%";
+            document.getElementById("stat-latency").textContent =
+              latency + "ms";
+          }, 5000);
+        } else {
+          if (autoRefreshInterval) clearInterval(autoRefreshInterval);
+          showToast("Live telemetry auto-refresh paused.");
+        }
+      }
+
+      // Sidebar Navigation & View Switching
+      const navItems = document.querySelectorAll(".nav-item[data-view]");
+      const subNavItems = document.querySelectorAll(".sub-nav-item");
+      const viewSections = document.querySelectorAll(".view-section");
+      const breadcrumbCurrent = document.getElementById("breadcrumb-current");
+
+      function switchView(viewId, titleText) {
+        navItems.forEach((n) => n.classList.remove("active"));
+        subNavItems.forEach((s) => s.classList.remove("active"));
+
+        const targetNav =
+          document.querySelector(`.nav-item[data-view="${viewId}"]`) ||
+          document.querySelector(`.sub-nav-item[data-view="${viewId}"]`);
+        if (targetNav) targetNav.classList.add("active");
+
+        viewSections.forEach((sec) => {
+          sec.classList.remove("active");
+          if (sec.id === `view-${viewId}`) {
+            sec.classList.add("active");
+          }
+        });
+
+        breadcrumbCurrent.textContent = titleText;
+      }
+
+      navItems.forEach((item) => {
+        item.addEventListener("click", () => {
+          const view = item.getAttribute("data-view");
+          const title = item.getAttribute("data-title");
+          if (view) switchView(view, title);
+        });
+      });
+
+      subNavItems.forEach((item) => {
+        item.addEventListener("click", () => {
+          const view = item.getAttribute("data-view");
+          const title = item.getAttribute("data-title");
+          if (view) switchView(view, title);
+        });
+      });
+
+      const quoteDropdownToggle = document.getElementById(
+        "quote-dropdown-toggle",
+      );
+      const quoteSubNav = document.getElementById("quote-sub-nav");
+
+      quoteDropdownToggle.addEventListener("click", () => {
+        quoteSubNav.classList.toggle("open");
+        if (quoteSubNav.classList.contains("open")) {
+          switchView("quote-ocean", "Generate Quote > Ocean Freight");
+        }
+      });
+
+      // Quote Calculators & Exporter
+      document
+        .getElementById("ocean-quote-form")
+        .addEventListener("submit", (e) => {
+          e.preventDefault();
+          const origin = document.getElementById("ocean-origin").value;
+          const dest = document.getElementById("ocean-destination").value;
+          const basePrice = parseFloat(
+            document.getElementById("ocean-container").value,
+          );
+          const duration = parseInt(
+            document.getElementById("ocean-duration").value,
+          );
+          const curr = document.getElementById("ocean-currency").value;
+          const finalPrice = (basePrice * (1 + (30 - duration) * 0.01)).toFixed(
+            2,
+          );
+
+          const resultDiv = document.getElementById("ocean-quote-result");
+          resultDiv.style.display = "block";
+          resultDiv.innerHTML = `<b>✔ Ocean Quote #MSK-9284 Calculated</b><br>Route: ${origin} ➔ ${dest}<br>Duration: ${duration} Days | Rate: <b>${finalPrice} ${curr}</b><br><button class="btn-primary-action" style="margin-top:0.75rem; padding:0.3rem 0.8rem; font-size:0.8rem;" onclick="exportQuoteText('${origin}', '${dest}', '${finalPrice}', '${curr}')">Export Quote Summary (TXT)</button>`;
+          showToast(`Ocean freight quote calculated: ${finalPrice} ${curr}`);
+        });
+
+      function exportQuoteText(orig, dest, price, curr) {
+        const text = `--- CYBER LOGISTICS OS QUOTE SUMMARY ---\nOrigin: ${orig}\nDestination: ${dest}\nTotal Rate: ${price} ${curr}\nGenerated by: Moataz Almutairi (CS Developer)\nTimestamp: ${new Date().toISOString()}`;
+        const blob = new Blob([text], { type: "text/plain" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "Logistics_Quote_Summary.txt";
+        a.click();
+        showToast("Quote summary downloaded successfully.");
+      }
+
+      document
+        .getElementById("air-quote-form")
+        .addEventListener("submit", (e) => {
+          e.preventDefault();
+          const weight = document.getElementById("air-weight").value;
+          const total = weight * 7.15;
+          const resultDiv = document.getElementById("air-quote-result");
+          resultDiv.style.display = "block";
+          resultDiv.innerHTML = `<b>✔ Air Cargo Quote #AIR-3829 Generated</b><br>Total Weight: ${weight} KG<br>Calculated Rate: <b>$${total.toFixed(2)} USD</b>`;
+          showToast(`Air freight quote generated: $${total.toFixed(2)} USD`);
+        });
+
+      document
+        .getElementById("express-quote-form")
+        .addEventListener("submit", (e) => {
+          e.preventDefault();
+          const resultDiv = document.getElementById("express-quote-result");
+          resultDiv.style.display = "block";
+          resultDiv.innerHTML = `<b>✔ Express Courier Quote #EXP-7711 Generated</b><br>Estimated Transit: 2 Business Days<br>Total Rate: <b>$340.00 USD</b>`;
+          showToast("Express courier quote generated ($340 USD)");
+        });
+
+      // Track Shipments Data & Filters
+      let shipmentsData = [
+        {
+          id: "#TRK-8821",
+          route: "Jeddah ➔ Rotterdam",
+          carrier: "Maersk Line",
+          status: "In Transit",
+          class: "connected",
+        },
+        {
+          id: "#TRK-5542",
+          route: "Riyadh ➔ Frankfurt",
+          carrier: "Global Air Cargo",
+          status: "Customs Processing",
+          class: "syncing",
+        },
+        {
+          id: "#TRK-9012",
+          route: "Dammam ➔ Singapore",
+          carrier: "Hapag-Lloyd",
+          status: "In Transit",
+          class: "connected",
+        },
+        {
+          id: "#TRK-1104",
+          route: "Jeddah ➔ Dubai",
+          carrier: "GCC Overland",
+          status: "Delivered",
+          class: "connected",
+        },
+      ];
+
+      let currentStatusFilter = "all";
+
+      function renderShipments(data) {
+        const tbody = document.getElementById("shipments-tbody");
+        tbody.innerHTML = data
+          .map(
+            (s) => `
+                <tr>
+                    <td><b>${s.id}</b></td>
+                    <td>${s.route}</td>
+                    <td>${s.carrier}</td>
+                    <td><span class="status-badge ${s.class}">${s.status}</span></td>
+                    <td style="text-align: right;"><button class="btn-primary-action" style="padding:0.3rem 0.7rem; font-size:0.8rem;" onclick="openTelemetryModal('${s.id}', '${s.route}', '${s.carrier}', '${s.status}')">Telemetry</button></td>
+                </tr>
+            `,
+          )
+          .join("");
+      }
+
+      function filterShipmentsStatus(status, btn) {
+        currentStatusFilter = status;
+        document
+          .querySelectorAll("#view-track-shipments .auth-toggle-btn")
+          .forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+        filterShipments();
+      }
+
+      function filterShipments() {
+        const query = document
+          .getElementById("shipment-search")
+          .value.toLowerCase();
+        const filtered = shipmentsData.filter((s) => {
+          const matchesSearch =
+            s.id.toLowerCase().includes(query) ||
+            s.route.toLowerCase().includes(query) ||
+            s.carrier.toLowerCase().includes(query);
+          const matchesStatus =
+            currentStatusFilter === "all" || s.status === currentStatusFilter;
+          return matchesSearch && matchesStatus;
+        });
+        renderShipments(filtered);
+      }
+
+      const telemetryModal = document.getElementById("telemetry-modal");
+      function openTelemetryModal(id, route, carrier, status) {
+        document.getElementById("telemetry-modal-title").textContent =
+          `Telemetry: ${id}`;
+        document.getElementById("telemetry-modal-content").innerHTML = `
+                <div><b>Route:</b> ${route}</div>
+                <div><b>Carrier:</b> ${carrier}</div>
+                <div><b>Current Status:</b> ${status}</div>
+                <div><b>GPS Coordinates:</b> 24.7136° N, 46.6753° E (Active Satellite Ping)</div>
+                <div><b>Vessel Speed:</b> 19.4 knots</div>
+                <div><b>Container Internal Temp:</b> 4.2°C (Optimal Reefer)</div>
+                <div><b>Estimated Arrival:</b> 3 Days, 14 Hours</div>
+            `;
+        telemetryModal.classList.add("open");
+      }
+
+      function closeTelemetryModal() {
+        telemetryModal.classList.remove("open");
+      }
+
+      const shipmentModal = document.getElementById("shipment-modal");
+      function openNewShipmentModal() {
+        shipmentModal.classList.add("open");
+      }
+      function closeNewShipmentModal() {
+        shipmentModal.classList.remove("open");
+      }
+
+      document
+        .getElementById("new-shipment-form")
+        .addEventListener("submit", (e) => {
+          e.preventDefault();
+          const id = document.getElementById("new-trk-id").value;
+          const route = document.getElementById("new-trk-route").value;
+          const carrier = document.getElementById("new-trk-carrier").value;
+          shipmentsData.unshift({
+            id,
+            route,
+            carrier,
+            status: "In Transit",
+            class: "connected",
+          });
+          filterShipments();
+          closeNewShipmentModal();
+          showToast(`Shipment ${id} dispatched successfully!`);
+          document.getElementById("stat-active-shipments").textContent =
+            "1,285";
+        });
+
+      // AI Console Prompt Runner
+      function runAIPrompt() {
+        const input = document.getElementById("ai-prompt-input");
+        const output = document.getElementById("ai-response-output");
+        const log = document.getElementById("ai-terminal-log");
+        const val = input.value.trim();
+        if (!val) {
+          showToast("Please enter an AI prompt.");
+          return;
+        }
+        output.innerHTML = "Analyzing query with autonomous neural network...";
+        setTimeout(() => {
+          output.innerHTML = `[AI RESPONSE] Successfully processed query: "${val}". Optimal route calculated via Madinah Logistics Hub with 99.4% confidence score.`;
+          log.innerHTML += `<br>[QUERY EXECUTED] "${val}" -> Resolved by FreightX-Optimizer.`;
+          showToast("AI prompt processed successfully.");
+        }, 600);
+      }
+
+      function clearAIChat() {
+        document.getElementById("ai-response-output").innerHTML = "";
+        document.getElementById("ai-prompt-input").value = "";
+        showToast("AI terminal chat cleared.");
+      }
+
+      // Customer Portal Data & Management
+      let clientsData = [
+        {
+          name: "Al-Madinah Global Trade Co.",
+          tier: "Tier 1 Enterprise",
+          status: "Active Account",
+          class: "connected",
+          containers: 42,
+        },
+        {
+          name: "Red Sea Logistics Corp.",
+          tier: "Tier 2 Partner",
+          status: "Active Account",
+          class: "connected",
+          containers: 18,
+        },
+        {
+          name: "Neom Advanced Tech Supply",
+          tier: "Tier 1 Enterprise",
+          status: "Active Account",
+          class: "connected",
+          containers: 9,
+        },
+      ];
+
+      function renderClients(data) {
+        const list = document.getElementById("clients-list");
+        list.innerHTML = data
+          .map(
+            (c) => `
+                <li style="padding:1rem; background:var(--bg-base); border:1px solid var(--border-glass); border-radius:8px; display:flex; justify-content:space-between; align-items:center;">
+                    <div><b>${c.name}</b> <span style="color:var(--text-secondary); font-size:0.85rem;">(${c.tier} - ${c.containers} active routes)</span></div>
+                    <div style="display:flex; gap:1rem; align-items:center;">
+                        <span class="status-badge ${c.class}">${c.status}</span>
+                        <button class="btn-primary-action" style="padding:0.25rem 0.6rem; font-size:0.8rem;" onclick="showToast('Client details loaded for ${c.name}')">Details</button>
+                    </div>
+                </li>
+            `,
+          )
+          .join("");
+      }
+
+      function filterClients() {
+        const q = document.getElementById("client-search").value.toLowerCase();
+        const filtered = clientsData.filter(
+          (c) =>
+            c.name.toLowerCase().includes(q) ||
+            c.tier.toLowerCase().includes(q),
+        );
+        renderClients(filtered);
+      }
+
+      const clientModal = document.getElementById("client-modal");
+      function openNewClientModal() {
+        clientModal.classList.add("open");
+      }
+      function closeNewClientModal() {
+        clientModal.classList.remove("open");
+      }
+
+      document
+        .getElementById("new-client-form")
+        .addEventListener("submit", (e) => {
+          e.preventDefault();
+          const name = document.getElementById("new-client-name").value;
+          const tier = document.getElementById("new-client-tier").value;
+          clientsData.push({
+            name,
+            tier,
+            status: "Active Account",
+            class: "connected",
+            containers: 5,
+          });
+          renderClients(clientsData);
+          closeNewClientModal();
+          showToast(`Enterprise client ${name} added successfully.`);
+        });
+
+      // Documents Repository Data & Simulator
+      let documentsData = [
+        { name: "Bill_of_Lading_MSK_2026_091.pdf", tag: "Bill of Lading" },
+        { name: "Customs_Clearance_KSA_Medinah.pdf", tag: "Customs" },
+      ];
+
+      function renderDocuments(data) {
+        const list = document.getElementById("doc-list");
+        list.innerHTML = data
+          .map(
+            (d) => `
+                <li style="display: flex; justify-content: space-between; align-items:center; padding: 1rem; background: var(--bg-base); border-radius: 8px; border: 1px solid var(--border-glass);">
+                    <span>📄 ${d.name} <span style="font-size:0.75rem; color:var(--accent-cyan); margin-left:0.5rem;">[${d.tag}]</span></span>
+                    <div style="display:flex; gap:1rem;">
+                        <span style="color: var(--accent-cyan); cursor: pointer; font-weight:600;" onclick="showToast('Previewing ${d.name}')">Preview</span>
+                        <span style="color: var(--accent-green); cursor: pointer; font-weight:600;" onclick="showToast('Downloading ${d.name}...')">Download</span>
+                    </div>
+                </li>
+            `,
+          )
+          .join("");
+      }
+
+      function filterDocuments() {
+        const q = document.getElementById("doc-search").value.toLowerCase();
+        const filtered = documentsData.filter(
+          (d) =>
+            d.name.toLowerCase().includes(q) || d.tag.toLowerCase().includes(q),
+        );
+        renderDocuments(filtered);
+      }
+
+      function simulateFileUpload() {
+        showToast("Simulating secure manifest upload...");
+        setTimeout(() => {
+          documentsData.unshift({
+            name: "Manifest_Dispatch_2026_10.pdf",
+            tag: "Manifest",
+          });
+          renderDocuments(documentsData);
+          showToast("Manifest uploaded and indexed successfully.");
+        }, 1000);
+      }
+
+      // Integrations Management Data & Toggles
+      let integrationsData = [
+        {
+          name: "Salesforce CRM",
+          category: "CRM",
+          status: "Connected",
+          active: true,
+        },
+        { name: "SAP TMS", category: "TMS", status: "Connected", active: true },
+        {
+          name: "Stripe Billing Gateway",
+          category: "Finance",
+          status: "Connected",
+          active: true,
+        },
+        {
+          name: "GitHub Enterprise API",
+          category: "DevOps",
+          status: "Disconnected",
+          active: false,
+        },
+      ];
+
+      function renderIntegrations(data) {
+        const tbody = document.getElementById("integrations-tbody");
+        tbody.innerHTML = data
+          .map(
+            (i, idx) => `
+                <tr>
+                    <td><b>${i.name}</b></td>
+                    <td>${i.category}</td>
+                    <td><span class="status-badge ${i.active ? "connected" : "error"}">${i.status}</span></td>
+                    <td style="text-align: right;">
+                        <input type="checkbox" ${i.active ? "checked" : ""} onchange="toggleIntegration(${idx})" style="width:18px; height:18px; accent-color:var(--accent-cyan); cursor:pointer;">
+                    </td>
+                </tr>
+            `,
+          )
+          .join("");
+      }
+
+      function toggleIntegration(idx) {
+        integrationsData[idx].active = !integrationsData[idx].active;
+        integrationsData[idx].status = integrationsData[idx].active
+          ? "Connected"
+          : "Disconnected";
+        renderIntegrations(integrationsData);
+        showToast(`Integration ${integrationsData[idx].name} status updated.`);
+      }
+
+      function filterIntegrations() {
+        const q = document
+          .getElementById("integrations-search")
+          .value.toLowerCase();
+        const filtered = integrationsData.filter(
+          (i) =>
+            i.name.toLowerCase().includes(q) ||
+            i.category.toLowerCase().includes(q),
+        );
+        renderIntegrations(filtered);
+      }
+
+      // Chart.js Initializations
+      let analyticsChartInstance = null;
+      let trainingChartInstance = null;
+
+      function initCharts() {
+        const ctxAnalytics = document
+          .getElementById("analyticsChart")
+          .getContext("2d");
+        analyticsChartInstance = new Chart(ctxAnalytics, {
+          type: "line",
+          data: {
+            labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+            datasets: [
+              {
+                label: "TEU Container Throughput",
+                data: [180, 240, 310, 290, 350, 420, 390],
+                borderColor: "#00f2fe",
+                backgroundColor: "rgba(0, 242, 254, 0.1)",
+                fill: true,
+                tension: 0.4,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { labels: { color: "#8b949e" } } },
+            scales: {
+              x: { ticks: { color: "#8b949e" }, grid: { color: "#30363d" } },
+              y: { ticks: { color: "#8b949e" }, grid: { color: "#30363d" } },
+            },
+          },
+        });
+
+        const ctxTraining = document
+          .getElementById("trainingChart")
+          .getContext("2d");
+        trainingChartInstance = new Chart(ctxTraining, {
+          type: "line",
+          data: {
+            labels: [
+              "Epoch 10",
+              "Epoch 20",
+              "Epoch 30",
+              "Epoch 40",
+              "Epoch 42",
+            ],
+            datasets: [
+              {
+                label: "Validation Loss",
+                data: [0.089, 0.054, 0.028, 0.016, 0.0142],
+                borderColor: "#6366f1",
+                backgroundColor: "rgba(99, 102, 241, 0.1)",
+                fill: true,
+                tension: 0.3,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { labels: { color: "#8b949e" } } },
+            scales: {
+              x: { ticks: { color: "#8b949e" }, grid: { color: "#30363d" } },
+              y: { ticks: { color: "#8b949e" }, grid: { color: "#30363d" } },
+            },
+          },
+        });
+      }
+
+      function updateAnalyticsRange(range, btn) {
+        document
+          .querySelectorAll("#view-analytics .auth-toggle-btn")
+          .forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+        if (range === "7d") {
+          analyticsChartInstance.data.labels = [
+            "Mon",
+            "Tue",
+            "Wed",
+            "Thu",
+            "Fri",
+            "Sat",
+            "Sun",
+          ];
+          analyticsChartInstance.data.datasets[0].data = [
+            180, 240, 310, 290, 350, 420, 390,
+          ];
+          document.getElementById("analytics-chart-title").textContent =
+            "Weekly Freight Throughput (TEU Containers)";
+        } else if (range === "30d") {
+          analyticsChartInstance.data.labels = [
+            "Week 1",
+            "Week 2",
+            "Week 3",
+            "Week 4",
+          ];
+          analyticsChartInstance.data.datasets[0].data = [
+            1250, 1420, 1680, 1890,
+          ];
+          document.getElementById("analytics-chart-title").textContent =
+            "Monthly Freight Throughput (TEU Containers)";
+        } else {
+          analyticsChartInstance.data.labels = ["Q1", "Q2", "Q3", "Q4"];
+          analyticsChartInstance.data.datasets[0].data = [
+            5400, 6200, 7100, 8400,
+          ];
+          document.getElementById("analytics-chart-title").textContent =
+            "Annual Freight Throughput (TEU Containers)";
+        }
+        analyticsChartInstance.update();
+        showToast(`Analytics updated for range: ${range.toUpperCase()}`);
+      }
+
+      function startAiTraining() {
+        showToast("Training epoch started! Optimizing neural weights...");
+        let epoch = 42;
+        const interval = setInterval(() => {
+          epoch++;
+          document.getElementById("training-epoch").textContent = epoch;
+          const newLoss = (0.0142 - (epoch - 42) * 0.0002).toFixed(4);
+          document.getElementById("training-loss").textContent =
+            `${newLoss} (Converging)`;
+          if (epoch >= 50) {
+            clearInterval(interval);
+            showToast(
+              "Training run completed successfully. Model accuracy increased by 1.4%.",
+            );
+          }
+        }, 800);
+      }
+
+      window.addEventListener("DOMContentLoaded", () => {
+        initCharts();
+        renderShipments(shipmentsData);
+        renderClients(clientsData);
+        renderDocuments(documentsData);
+        renderIntegrations(integrationsData);
+      });
+
+      // Global Search Bar Shortcut
+      const globalSearch = document.getElementById("global-search-input");
+      globalSearch.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") {
+          const q = globalSearch.value.trim();
+          if (q) {
+            showToast(`Searching logistics database for: "${q}"`);
+            switchView("track-shipments", "Track Shipments");
+          }
+        }
+      });
+    </script>
+  </body>
+</html>

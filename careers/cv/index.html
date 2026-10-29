@@ -1,0 +1,675 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Moataz Almutairi — 3D Cyber Portfolio & CV</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Three.js CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+      /* ==========================================
+           ELITE 3D CYBER-DARK DESIGN SYSTEM
+           ========================================== */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        --bg-base: #07090e;
+        --bg-surface: rgba(22, 27, 34, 0.75);
+        --border-glass: rgba(255, 255, 255, 0.08);
+        --border-hover: rgba(0, 242, 254, 0.45);
+        --text-primary: #f0f6fc;
+        --text-secondary: #8b949e;
+        --accent-cyan: #00f2fe;
+        --accent-indigo: #6366f1;
+        --accent-gradient: linear-gradient(135deg, #00f2fe 0%, #6366f1 100%);
+        --glow-shadow: rgba(0, 242, 254, 0.2);
+        --font-main: "Inter", sans-serif;
+        --font-mono: "JetBrains Mono", monospace;
+        --radius-card: 16px;
+      }
+
+      body {
+        font-family: var(--font-main);
+        background-color: var(--bg-base);
+        color: var(--text-primary);
+        min-height: 100vh;
+        overflow-x: hidden;
+        line-height: 1.7;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      /* Three.js Canvas Background */
+      #canvas-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: 0;
+        pointer-events: none;
+      }
+
+      .cv-wrapper {
+        position: relative;
+        z-index: 1;
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 3.5rem 1.5rem 5rem 1.5rem;
+      }
+
+      /* Glassmorphic Hero Section */
+      .cv-hero {
+        background: var(--bg-surface);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid var(--border-glass);
+        border-radius: var(--radius-card);
+        padding: 3rem;
+        margin-bottom: 2.5rem;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+        transform-style: preserve-3d;
+        perspective: 1000px;
+        transition:
+          border-color 0.3s ease,
+          box-shadow 0.3s ease;
+      }
+
+      .cv-hero:hover {
+        border-color: var(--border-hover);
+        box-shadow: 0 25px 60px -10px var(--glow-shadow);
+      }
+
+      .hero-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+        margin-bottom: 1.75rem;
+      }
+
+      .hero-identity h1 {
+        font-size: 2.75rem;
+        font-weight: 800;
+        letter-spacing: -0.03em;
+        color: #ffffff;
+        margin-bottom: 0.35rem;
+      }
+
+      .hero-identity h2 {
+        font-size: 1.15rem;
+        font-weight: 500;
+        color: var(--accent-cyan);
+        font-family: var(--font-mono);
+        letter-spacing: -0.01em;
+      }
+
+      .badge-pill {
+        background: rgba(0, 242, 254, 0.08);
+        border: 1px solid rgba(0, 242, 254, 0.3);
+        color: var(--accent-cyan);
+        padding: 0.5rem 1.1rem;
+        border-radius: 50px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        font-family: var(--font-mono);
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        box-shadow: 0 0 15px rgba(0, 242, 254, 0.1);
+      }
+
+      .bio-box {
+        background: rgba(11, 15, 23, 0.65);
+        border: 1px solid var(--border-glass);
+        border-radius: 12px;
+        padding: 1.5rem;
+        font-size: 1.025rem;
+        color: #d1d5db;
+        line-height: 1.8;
+        font-family: var(--font-main);
+      }
+
+      /* Navigation Tab Bar */
+      .cv-tabs {
+        display: flex;
+        gap: 0.85rem;
+        margin-bottom: 2.5rem;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      .tab-btn {
+        background: var(--bg-surface);
+        backdrop-filter: blur(12px);
+        border: 1px solid var(--border-glass);
+        color: var(--text-secondary);
+        padding: 0.8rem 1.75rem;
+        border-radius: 50px;
+        font-family: var(--font-main);
+        font-size: 0.95rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      .tab-btn:hover {
+        border-color: rgba(255, 255, 255, 0.2);
+        color: var(--text-primary);
+      }
+
+      .tab-btn.active {
+        background: var(--accent-gradient);
+        border-color: transparent;
+        color: #07090e;
+        box-shadow: 0 8px 25px rgba(0, 242, 254, 0.35);
+      }
+
+      /* CV Sections & 3D Tilt Cards */
+      .cv-section-panel {
+        display: none;
+        flex-direction: column;
+        gap: 2rem;
+        animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      .cv-section-panel.active {
+        display: flex;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(12px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .grid-cards-2 {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 1.75rem;
+      }
+
+      .card-3d {
+        background: var(--bg-surface);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        border: 1px solid var(--border-glass);
+        border-radius: var(--radius-card);
+        padding: 2.25rem;
+        transition:
+          border-color 0.3s ease,
+          box-shadow 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        transform-style: preserve-3d;
+        perspective: 1000px;
+      }
+
+      .card-3d:hover {
+        border-color: var(--border-hover);
+        box-shadow: 0 20px 40px -10px var(--glow-shadow);
+      }
+
+      .card-header {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: #ffffff;
+      }
+
+      .card-subtitle {
+        font-size: 0.85rem;
+        color: var(--accent-cyan);
+        font-family: var(--font-mono);
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+
+      .card-desc {
+        color: var(--text-secondary);
+        font-size: 0.975rem;
+        line-height: 1.7;
+      }
+
+      .list-items {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 0.6rem;
+        margin-top: 0.5rem;
+      }
+
+      .list-items li {
+        position: relative;
+        padding-left: 1.25rem;
+        color: var(--text-secondary);
+        font-size: 0.95rem;
+      }
+
+      .list-items li::before {
+        content: "▹";
+        position: absolute;
+        left: 0;
+        color: var(--accent-cyan);
+        font-weight: bold;
+      }
+
+      /* Skills Tags */
+      .skills-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.65rem;
+        margin-top: 0.5rem;
+      }
+
+      .skill-tag {
+        background: rgba(0, 242, 254, 0.06);
+        border: 1px solid rgba(0, 242, 254, 0.2);
+        color: var(--accent-cyan);
+        padding: 0.4rem 1rem;
+        border-radius: 8px;
+        font-family: var(--font-mono);
+        font-size: 0.85rem;
+        font-weight: 500;
+        transition: all 0.2s ease;
+      }
+
+      .skill-tag:hover {
+        background: rgba(0, 242, 254, 0.18);
+        transform: scale(1.05);
+        border-color: var(--accent-cyan);
+      }
+
+      /* Footer */
+      .cv-footer {
+        text-align: center;
+        margin-top: 5rem;
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+        border-top: 1px solid var(--border-glass);
+        padding-top: 2rem;
+        font-family: var(--font-mono);
+      }
+
+      @media (max-width: 768px) {
+        .cv-hero {
+          padding: 1.75rem;
+        }
+        .hero-identity h1 {
+          font-size: 2.1rem;
+        }
+        .cv-tabs {
+          flex-direction: column;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Three.js Background Canvas -->
+    <div id="canvas-container"></div>
+
+    <div class="cv-wrapper">
+      <!-- Hero Section -->
+      <header class="cv-hero" data-tilt>
+        <div class="hero-top">
+          <div class="hero-identity">
+            <h1>Moataz Almutairi</h1>
+            <h2>Computer Science Student & Custom Tool Developer</h2>
+          </div>
+          <div class="hero-badges">
+            <span class="badge-pill">📍 Madinah, Saudi Arabia</span>
+          </div>
+        </div>
+
+        <div class="bio-box">
+          Web developer with a specialized TVTC Diploma, currently finalizing a
+          Bachelor's Degree in Computer Science. Passionate about building
+          custom software tools, interactive utilities, and specialized game
+          modifications alongside maintaining strong physical discipline.
+        </div>
+      </header>
+
+      <!-- Navigation Tab Bar -->
+      <nav class="cv-tabs">
+        <button class="tab-btn active" data-tab="overview">
+          ⚡ All Overview
+        </button>
+        <button class="tab-btn" data-tab="academic">🎓 Academic & Tech</button>
+        <button class="tab-btn" data-tab="hobbies">
+          🎮 Hobbies & Lifestyle
+        </button>
+      </nav>
+
+      <!-- Tab 1: All Overview (Shows everything combined) -->
+      <section id="overview" class="cv-section-panel active">
+        <div class="grid-cards-2">
+          <div class="card-3d" data-tilt>
+            <div class="card-subtitle">Education</div>
+            <div class="card-header">🎓 Academic Journey</div>
+            <ul class="list-items">
+              <li>Bachelor of Science in Computer Science (Near Completion)</li>
+              <li>Diploma in Programming & Web Development (TVTC)</li>
+            </ul>
+          </div>
+
+          <div class="card-3d" data-tilt>
+            <div class="card-subtitle">Engineering Focus</div>
+            <div class="card-header">⚙️ Custom Tools & Systems</div>
+            <ul class="list-items">
+              <li>Custom Software Tools Development</li>
+              <li>Interactive System Utilities</li>
+              <li>Game Modification & Reverse Engineering Concepts</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="card-3d" data-tilt>
+          <div class="card-subtitle">Technical Proficiency</div>
+          <div class="card-header">💻 Technical Stack</div>
+          <p class="card-desc">
+            Comprehensive command over programming languages, web engineering
+            standards, and robust version control workflows.
+          </p>
+          <div class="skills-grid">
+            <span class="skill-tag">Python</span>
+            <span class="skill-tag">JavaScript (ES6+)</span>
+            <span class="skill-tag">HTML5 / CSS3</span>
+            <span class="skill-tag">SQL</span>
+            <span class="skill-tag">Git & GitHub</span>
+            <span class="skill-tag">Custom Tooling</span>
+          </div>
+        </div>
+
+        <div class="grid-cards-2">
+          <div class="card-3d" data-tilt>
+            <div class="card-subtitle">Gaming & Mechanics</div>
+            <div class="card-header">🎮 PC Gaming & Tooling</div>
+            <p class="card-desc">
+              Passionate PC Gamer (Fortnite, Red Dead Redemption 2 / RedM, ARC
+              Raiders, Overwatch) with an avid interest in exploring custom game
+              mechanics, scripting, and tooling.
+            </p>
+          </div>
+
+          <div class="card-3d" data-tilt>
+            <div class="card-subtitle">Physical Discipline</div>
+            <div class="card-header">🏋️ Fitness & Bodybuilding</div>
+            <p class="card-desc">
+              Dedicated to strength training via a strict Push/Pull/Legs (PPL)
+              split, daily cardio metrics, and disciplined nutrition.
+            </p>
+          </div>
+        </div>
+
+        <div class="card-3d" data-tilt>
+          <div class="card-subtitle">Visual Culture</div>
+          <div class="card-header">🎨 Art & Aesthetics</div>
+          <p class="card-desc">
+            Deep admirer of 1999 retro anime visual art styles, Studio Ghibli
+            aesthetics, and ultra-clean dark UI design systems.
+          </p>
+        </div>
+      </section>
+
+      <!-- Tab 2: Academic & Tech -->
+      <section id="academic" class="cv-section-panel">
+        <div class="grid-cards-2">
+          <div class="card-3d" data-tilt>
+            <div class="card-subtitle">Education</div>
+            <div class="card-header">🎓 Academic Background</div>
+            <ul class="list-items">
+              <li>Bachelor of Science in Computer Science (Near Completion)</li>
+              <li>Diploma in Programming & Web Development (TVTC)</li>
+            </ul>
+          </div>
+
+          <div class="card-3d" data-tilt>
+            <div class="card-subtitle">Specialization</div>
+            <div class="card-header">⚙️ Core Specialization</div>
+            <ul class="list-items">
+              <li>Custom Software Tools Development</li>
+              <li>Interactive Utilities</li>
+              <li>Game Modification & Reverse Engineering</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="card-3d" data-tilt>
+          <div class="card-subtitle">Technical Proficiency</div>
+          <div class="card-header">💻 Technical Stack & Skills</div>
+          <p class="card-desc">
+            Building robust, scalable applications and custom utilities with
+            modern technologies and rigorous version control practices.
+          </p>
+          <div class="skills-grid">
+            <span class="skill-tag">Python</span>
+            <span class="skill-tag">JavaScript (ES6+)</span>
+            <span class="skill-tag">HTML5 / CSS3</span>
+            <span class="skill-tag">SQL</span>
+            <span class="skill-tag">Git & GitHub</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Tab 3: Hobbies & Lifestyle -->
+      <section id="hobbies" class="cv-section-panel">
+        <div class="grid-cards-2">
+          <div class="card-3d" data-tilt>
+            <div class="card-subtitle">Gaming & Mechanics</div>
+            <div class="card-header">🎮 PC Gaming & Tooling</div>
+            <p class="card-desc">
+              Active player of Fortnite, Red Dead Redemption 2 / RedM, ARC
+              Raiders, and Overwatch, combining gaming passion with custom game
+              mechanics exploration.
+            </p>
+          </div>
+
+          <div class="card-3d" data-tilt>
+            <div class="card-subtitle">Physical Discipline</div>
+            <div class="card-header">🏋️ Fitness & Bodybuilding</div>
+            <p class="card-desc">
+              Committed to a strict Push/Pull/Legs (PPL) strength training
+              split, daily cardio metrics, and disciplined nutrition.
+            </p>
+          </div>
+        </div>
+
+        <div class="card-3d" data-tilt>
+          <div class="card-subtitle">Visual Culture</div>
+          <div class="card-header">🎨 Art & Visual Aesthetics</div>
+          <p class="card-desc">
+            Passionate admirer of 1999 retro anime visual art styles and Studio
+            Ghibli aesthetics, translating timeless creative depth into digital
+            design.
+          </p>
+        </div>
+      </section>
+
+      <!-- Footer -->
+      <footer class="cv-footer">
+        <p>
+          &copy; 2026 Moataz Almutairi. Engineered with Three.js & Cyber-Dark
+          Precision.
+        </p>
+      </footer>
+    </div>
+
+    <!-- JavaScript: Three.js Interactive Background & 3D Tilt / Tabs -->
+    <script>
+      // ==========================================
+      // THREE.JS 3D WIREFRAME GEOMETRIC CORE BACKGROUND
+      // ==========================================
+      const container = document.getElementById("canvas-container");
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(
+        60,
+        window.innerWidth / window.innerHeight,
+        0.1,
+        1000,
+      );
+      camera.position.z = 5;
+
+      const renderer = new THREE.WebGLRenderer({
+        antialias: true,
+        alpha: true,
+      });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      container.appendChild(renderer.domElement);
+
+      // Create 3D Wireframe Icosahedron & Particle Mesh Ring
+      const geometry = new THREE.IcosahedronGeometry(2, 2);
+      const material = new THREE.MeshBasicMaterial({
+        color: 0x00f2fe,
+        wireframe: true,
+        transparent: true,
+        opacity: 0.18,
+      });
+      const icosahedron = new THREE.Mesh(geometry, material);
+      scene.add(icosahedron);
+
+      // Particle Ring
+      const particlesCount = 400;
+      const particlesGeometry = new THREE.BufferGeometry();
+      const positions = new Float32Array(particlesCount * 3);
+
+      for (let i = 0; i < particlesCount * 3; i += 3) {
+        const radius = 3.5 + Math.random() * 2;
+        const theta = Math.random() * Math.PI * 2;
+        const phi = (Math.random() - 0.5) * Math.PI;
+
+        positions[i] = radius * Math.cos(phi) * Math.cos(theta);
+        positions[i + 1] = radius * Math.sin(phi);
+        positions[i + 2] = radius * Math.cos(phi) * Math.sin(theta);
+      }
+
+      particlesGeometry.setAttribute(
+        "position",
+        new THREE.BufferAttribute(positions, 3),
+      );
+      const particlesMaterial = new THREE.PointsMaterial({
+        color: 0x6366f1,
+        size: 0.035,
+        transparent: true,
+        opacity: 0.5,
+      });
+      const particleSystem = new THREE.Points(
+        particlesGeometry,
+        particlesMaterial,
+      );
+      scene.add(particleSystem);
+
+      // Mouse interaction for 3D background rotation
+      let mouseX = 0;
+      let mouseY = 0;
+      let targetX = 0;
+      let targetY = 0;
+
+      document.addEventListener("mousemove", (event) => {
+        mouseX = (event.clientX / window.innerWidth) * 2 - 1;
+        mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
+      });
+
+      // Animation Loop
+      const clock = new THREE.Clock();
+      function animate() {
+        requestAnimationFrame(animate);
+
+        targetX = mouseX * 0.5;
+        targetY = mouseY * 0.5;
+
+        icosahedron.rotation.x +=
+          0.002 + (targetY - icosahedron.rotation.x) * 0.05;
+        icosahedron.rotation.y +=
+          0.003 + (targetX - icosahedron.rotation.y) * 0.05;
+
+        particleSystem.rotation.y -= 0.001;
+
+        renderer.render(scene, camera);
+      }
+      animate();
+
+      // Responsive resize
+      window.addEventListener("resize", () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      });
+
+      // ==========================================
+      // 3D CARD TILT EFFECT
+      // ==========================================
+      const tiltCards = document.querySelectorAll("[data-tilt]");
+      tiltCards.forEach((card) => {
+        card.addEventListener("mousemove", (e) => {
+          const rect = card.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+
+          const centerX = rect.width / 2;
+          const centerY = rect.height / 2;
+
+          const rotateX = ((y - centerY) / centerY) * -7;
+          const rotateY = ((x - centerX) / centerX) * 7;
+
+          card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-4px)`;
+        });
+
+        card.addEventListener("mouseleave", () => {
+          card.style.transform =
+            "perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0px)";
+          card.style.transition = "transform 0.5s ease";
+        });
+
+        card.addEventListener("mouseenter", () => {
+          card.style.transition = "none";
+        });
+      });
+
+      // ==========================================
+      // TAB SWITCHER LOGIC
+      // ==========================================
+      document.addEventListener("DOMContentLoaded", () => {
+        const tabButtons = document.querySelectorAll(".tab-btn");
+        const panels = document.querySelectorAll(".cv-section-panel");
+
+        tabButtons.forEach((button) => {
+          button.addEventListener("click", () => {
+            const targetTab = button.getAttribute("data-tab");
+
+            tabButtons.forEach((btn) => btn.classList.remove("active"));
+            button.classList.add("active");
+
+            panels.forEach((panel) => {
+              panel.classList.remove("active");
+              if (panel.id === targetTab) {
+                panel.classList.add("active");
+              }
+            });
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

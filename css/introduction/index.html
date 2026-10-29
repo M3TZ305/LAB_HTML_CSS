@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Introduction - Styled Hobbies & Profile</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header id="main-header">
+        <h1>Styled Web Development Page</h1>
+        <h2>Mini Project 2: CSS Styling, Box Model & Flexbox</h2>
+    </header>
+
+    <main class="container">
+        <!-- About Section -->
+        <section class="card">
+            <h3>About This Page</h3>
+            <p>This page expands upon Mini Project 1 by applying modern CSS selectors, colors (HEX, RGB, HSL), Google Fonts typography, and the CSS Box Model.</p>
+            <p>We use <span class="highlight-bold">bold highlighted text</span> for key concepts and <span class="highlight-italic">italicized text</span> for descriptive notes.</p>
+        </section>
+
+        <!-- Favorite Links & Hobbies -->
+        <section class="card">
+            <h3>Favorite Resources & Hobbies</h3>
+            <p>Here are some essential web platforms and personal interests structured with Flexbox:</p>
+            <ul class="flex-list">
+                <li><a href="https://developer.mozilla.org" target="_blank">MDN Web Docs</a></li>
+                <li><a href="https://github.com" target="_blank">GitHub</a></li>
+                <li><a href="https://www.freecodecamp.org" target="_blank">freeCodeCamp</a></li>
+                <li><a href="https://css-tricks.com" target="_blank">CSS-Tricks</a></li>
+            </ul>
+        </section>
+
+        <!-- Table Section -->
+        <section class="card">
+            <h3>Skills Matrix</h3>
+            <p>Overview of technical competencies styled with clean borders and hover effects.</p>
+            <table class="styled-table">
+                <thead>
+                    <tr>
+                        <th>Domain</th>
+                        <th>Technologies</th>
+                        <th>Competency</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Frontend</td>
+                        <td>HTML5, CSS3, JavaScript</td>
+                        <td>Proficient</td>
+                    </tr>
+                    <tr>
+                        <td>Backend & Scripting</td>
+                        <td>Python, SQL</td>
+                        <td>Intermediate</td>
+                    </tr>
+                    <tr>
+                        <td>Tools & Workflow</td>
+                        <td>Git, VS Code, Linux</td>
+                        <td>Advanced</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Contact Form Section -->
+        <section class="card">
+            <h3>Contact Form</h3>
+            <form action="#" method="POST">
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" name="name" required placeholder="Enter your full name">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" required placeholder="name@example.com">
+                </div>
+                <div class="form-group">
+                    <label for="topic">Inquiry Topic</label>
+                    <select id="topic" name="topic">
+                        <option value="general">General Inquiry</option>
+                        <option value="css">CSS Styling & Layout</option>
+                        <option value="collab">Project Collaboration</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea id="message" name="message" rows="4" placeholder="Write your message here..."></textarea>
+                </div>
+                <button type="submit" class="btn-submit">Submit Form</button>
+            </form>
+        </section>
+    </main>
+
+    <footer id="main-footer">
+        <p>&copy; 2026 CSS Lab Assignment. Designed with professional styling standards.</p>
+    </footer>
+</body>
+</html>

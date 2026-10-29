@@ -1,0 +1,177 @@
+/* Reset & Base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --cv-primary: #0f172a;
+    --cv-accent: #2563eb;
+    --cv-bg: #f1f5f9;
+    --cv-card: #ffffff;
+    --cv-text: #334155;
+    --cv-muted: #64748b;
+    --cv-border: #e2e8f0;
+}
+
+body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background-color: var(--cv-bg);
+    color: var(--cv-text);
+    line-height: 1.6;
+    padding: 2rem 1rem;
+}
+
+.cv-wrapper {
+    max-width: 900px;
+    margin: 0 auto;
+    background-color: var(--cv-card);
+    border-radius: 16px;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    border: 1px solid var(--cv-border);
+}
+
+/* CV Header */
+.cv-header {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    color: #ffffff;
+    padding: 3rem 2.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+}
+
+.cv-title-area h1 {
+    font-size: 2.25rem;
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    margin-bottom: 0.25rem;
+}
+
+.cv-title-area h2 {
+    font-size: 1.15rem;
+    font-weight: 500;
+    color: #93c5fd;
+}
+
+.cv-contact-info {
+    font-size: 0.9rem;
+    color: #cbd5e1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.cv-contact-info span {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* CV Body Layout */
+.cv-body {
+    padding: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+}
+
+.cv-section h3 {
+    font-size: 1.25rem;
+    color: var(--cv-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--cv-accent);
+    display: inline-block;
+}
+
+.cv-item {
+    margin-bottom: 1.5rem;
+}
+
+.cv-item:last-child {
+    margin-bottom: 0;
+}
+
+.item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 0.35rem;
+}
+
+.item-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.item-subtitle {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--cv-accent);
+}
+
+.item-date {
+    font-size: 0.85rem;
+    color: var(--cv-muted);
+    font-weight: 500;
+}
+
+.item-description {
+    font-size: 0.95rem;
+    color: var(--cv-text);
+    margin-top: 0.5rem;
+}
+
+/* Skills Grid / Badges */
+.skills-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.skill-badge {
+    background-color: #f8fafc;
+    border: 1px solid var(--cv-border);
+    color: #1e293b;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+    transition: all 0.2s;
+}
+
+.skill-badge:hover {
+    background-color: #eff6ff;
+    border-color: var(--cv-accent);
+    color: var(--cv-accent);
+}
+
+/* Print Styles */
+@media print {
+    body {
+        background-color: #ffffff;
+        padding: 0;
+    }
+    .cv-wrapper {
+        box-shadow: none;
+        border: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .cv-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}

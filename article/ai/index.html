@@ -1,0 +1,999 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Masterclass Technical Knowledge Base & Articles</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* ==========================================
+           PRINCIPAL ARCHITECT DARK THEME SYSTEM
+           ========================================== */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        --bg-base: #0b0f17;
+        --card-bg: rgba(22, 27, 34, 0.85);
+        --card-border: rgba(255, 255, 255, 0.08);
+        --card-border-hover: rgba(0, 242, 254, 0.45);
+        --text-primary: #f3f4f6;
+        --text-secondary: #9ca3af;
+        --accent-gradient: linear-gradient(135deg, #00f2fe 0%, #7f00ff 100%);
+        --accent-glow: rgba(0, 242, 254, 0.25);
+        --font-heading: "Outfit", sans-serif;
+        --font-body: "Inter", sans-serif;
+        --font-mono: "JetBrains Mono", monospace;
+      }
+
+      body {
+        font-family: var(--font-body);
+        background-color: var(--bg-base);
+        color: var(--text-primary);
+        min-height: 100vh;
+        overflow-x: hidden;
+        line-height: 1.7;
+      }
+
+      /* Ambient Glow Background */
+      body::before {
+        content: "";
+        position: fixed;
+        top: -200px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 900px;
+        height: 450px;
+        background: radial-gradient(
+          circle,
+          rgba(0, 242, 254, 0.08) 0%,
+          rgba(127, 0, 255, 0.04) 50%,
+          transparent 80%
+        );
+        z-index: 0;
+        pointer-events: none;
+      }
+
+      .container {
+        position: relative;
+        z-index: 1;
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 4rem 2rem 6rem 2rem;
+      }
+
+      /* Hero Header */
+      .hero {
+        text-align: center;
+        margin-bottom: 3rem;
+      }
+
+      .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: rgba(0, 242, 254, 0.1);
+        border: 1px solid rgba(0, 242, 254, 0.3);
+        color: #00f2fe;
+        padding: 0.35rem 1rem;
+        border-radius: 50px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        margin-bottom: 1rem;
+        box-shadow: 0 0 20px rgba(0, 242, 254, 0.15);
+      }
+
+      .hero h1 {
+        font-family: var(--font-heading);
+        font-size: 3rem;
+        font-weight: 800;
+        letter-spacing: -0.03em;
+        margin-bottom: 0.75rem;
+        background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .hero p {
+        color: var(--text-secondary);
+        font-size: 1.1rem;
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      /* Search Section */
+      .search-section {
+        max-width: 750px;
+        margin: 0 auto 2.5rem auto;
+        display: flex;
+        flex-direction: column;
+        gap: 1.25rem;
+      }
+
+      .search-bar {
+        position: relative;
+        width: 100%;
+      }
+
+      .search-input {
+        width: 100%;
+        padding: 1.2rem 3rem 1.2rem 3.4rem;
+        background: var(--card-bg);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid var(--card-border);
+        border-radius: 16px;
+        font-size: 1.05rem;
+        font-family: var(--font-body);
+        color: var(--text-primary);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        transition: all 0.3s ease;
+      }
+
+      .search-input:focus {
+        outline: none;
+        border-color: #00f2fe;
+        box-shadow:
+          0 0 0 4px var(--accent-glow),
+          0 15px 35px rgba(0, 0, 0, 0.5);
+      }
+
+      .search-icon {
+        position: absolute;
+        left: 1.25rem;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 1.2rem;
+        color: var(--text-secondary);
+        pointer-events: none;
+      }
+
+      /* Filter Pills */
+      .filter-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.65rem;
+        justify-content: center;
+      }
+
+      .filter-pill {
+        background: var(--card-bg);
+        backdrop-filter: blur(10px);
+        border: 1px solid var(--card-border);
+        color: var(--text-secondary);
+        padding: 0.5rem 1.2rem;
+        border-radius: 50px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.25s ease;
+      }
+
+      .filter-pill:hover {
+        border-color: rgba(255, 255, 255, 0.2);
+        color: var(--text-primary);
+      }
+
+      .filter-pill.active {
+        background: var(--accent-gradient);
+        border-color: transparent;
+        color: #0b0f17;
+        font-weight: 700;
+        box-shadow: 0 6px 20px rgba(0, 242, 254, 0.3);
+      }
+
+      /* Results Counter */
+      .meta-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+        margin-bottom: 1.75rem;
+        padding: 0 0.5rem;
+      }
+
+      .meta-bar strong {
+        color: var(--text-primary);
+      }
+
+      /* Article Grid */
+      .article-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 2rem;
+      }
+
+      /* Article Card */
+      .article-card {
+        background: var(--card-bg);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid var(--card-border);
+        border-radius: 20px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        position: relative;
+      }
+
+      .article-card:hover {
+        transform: translateY(-6px);
+        border-color: var(--card-border-hover);
+        box-shadow: 0 20px 40px -10px rgba(0, 242, 254, 0.2);
+      }
+
+      .card-img-banner {
+        height: 200px;
+        background-size: cover;
+        background-position: center;
+        position: relative;
+      }
+
+      .card-img-banner::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          to top,
+          rgba(22, 27, 34, 0.95) 0%,
+          transparent 60%
+        );
+      }
+
+      .card-category-badge {
+        position: absolute;
+        top: 1rem;
+        left: 1rem;
+        z-index: 2;
+        background: rgba(11, 15, 23, 0.85);
+        backdrop-filter: blur(6px);
+        border: 1px solid var(--card-border);
+        color: #00f2fe;
+        padding: 0.3rem 0.8rem;
+        border-radius: 50px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+
+      .card-body {
+        padding: 1.75rem;
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        gap: 0.85rem;
+      }
+
+      .card-title {
+        font-family: var(--font-heading);
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        line-height: 1.35;
+        transition: color 0.2s;
+      }
+
+      .article-card:hover .card-title {
+        color: #00f2fe;
+      }
+
+      .card-excerpt {
+        font-size: 0.925rem;
+        color: var(--text-secondary);
+        line-height: 1.6;
+        flex: 1;
+      }
+
+      .card-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.35rem;
+      }
+
+      .tag {
+        font-size: 0.75rem;
+        font-family: var(--font-mono);
+        background: rgba(0, 242, 254, 0.08);
+        color: #00f2fe;
+        padding: 0.15rem 0.5rem;
+        border-radius: 4px;
+        border: 1px solid rgba(0, 242, 254, 0.15);
+      }
+
+      .card-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: 1rem;
+        border-top: 1px solid var(--card-border);
+        font-size: 0.825rem;
+        color: var(--text-secondary);
+      }
+
+      .read-link {
+        font-weight: 600;
+        color: #00f2fe;
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+        transition: gap 0.2s;
+      }
+
+      .article-card:hover .read-link {
+        gap: 0.5rem;
+        color: #7f00ff;
+      }
+
+      /* Empty State */
+      .empty-state {
+        grid-column: 1 / -1;
+        background: var(--card-bg);
+        border: 1px solid var(--card-border);
+        border-radius: 20px;
+        padding: 4rem 2rem;
+        text-align: center;
+        color: var(--text-secondary);
+      }
+
+      .empty-state h3 {
+        font-family: var(--font-heading);
+        font-size: 1.4rem;
+        color: var(--text-primary);
+        margin-bottom: 0.5rem;
+      }
+
+      /* Modal Reader */
+      .modal-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(7, 9, 14, 0.85);
+        backdrop-filter: blur(14px);
+        z-index: 1000;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 2rem;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+      }
+
+      .modal-overlay.open {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .modal-container {
+        background: #121824;
+        border: 1px solid rgba(0, 242, 254, 0.35);
+        border-radius: 24px;
+        width: 100%;
+        max-width: 900px;
+        max-height: 90vh;
+        overflow-y: auto;
+        padding: 3rem;
+        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7);
+        transform: translateY(20px);
+        transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        position: relative;
+      }
+
+      .modal-overlay.open .modal-container {
+        transform: translateY(0);
+      }
+
+      .modal-close-btn {
+        position: sticky;
+        top: 0;
+        float: right;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid var(--card-border);
+        color: var(--text-primary);
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        font-size: 1.2rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+        z-index: 10;
+      }
+
+      .modal-close-btn:hover {
+        background: var(--accent-gradient);
+        border-color: transparent;
+        color: #0b0f17;
+      }
+
+      .modal-header {
+        margin-bottom: 2.25rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid var(--card-border);
+      }
+
+      .modal-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        align-items: center;
+        margin-bottom: 1rem;
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+      }
+
+      .modal-title {
+        font-family: var(--font-heading);
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: var(--text-primary);
+        line-height: 1.25;
+        margin-bottom: 1rem;
+      }
+
+      .modal-content {
+        font-size: 1.1rem;
+        color: #d1d5db;
+        line-height: 1.8;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+
+      .modal-content h2 {
+        font-family: var(--font-heading);
+        font-size: 1.75rem;
+        color: var(--text-primary);
+        margin-top: 1.25rem;
+        border-bottom: 1px solid var(--card-border);
+        padding-bottom: 0.4rem;
+      }
+
+      .modal-content h3 {
+        font-family: var(--font-heading);
+        font-size: 1.35rem;
+        color: var(--text-primary);
+        margin-top: 0.75rem;
+      }
+
+      .modal-content ul {
+        margin: 0.5rem 0 1rem 1.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        color: #cbd5e1;
+      }
+
+      .modal-content blockquote {
+        border-left: 4px solid #00f2fe;
+        padding: 1rem 1.5rem;
+        background: rgba(0, 242, 254, 0.06);
+        border-radius: 0 12px 12px 0;
+        font-style: italic;
+        color: #f3f4f6;
+      }
+
+      .modal-content pre {
+        background: #07090f;
+        border: 1px solid var(--card-border);
+        padding: 1.25rem;
+        border-radius: 12px;
+        font-family: var(--font-mono);
+        font-size: 0.9rem;
+        color: #00f2fe;
+        overflow-x: auto;
+      }
+
+      @media (max-width: 768px) {
+        .hero h1 {
+          font-size: 2.2rem;
+        }
+        .modal-container {
+          padding: 1.5rem;
+        }
+        .modal-title {
+          font-size: 1.75rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- Hero Header -->
+      <header class="hero">
+        <div class="hero-badge">⚡ Masterclass Tech Knowledge Base</div>
+        <h1>AI & Modern Web Engineering</h1>
+        <p>
+          Explore rigorous technical explorations, AI model architectures,
+          layout mastery, and clean code principles.
+        </p>
+      </header>
+
+      <!-- Search & Filter Section -->
+      <div class="search-section">
+        <div class="search-bar">
+          <span class="search-icon">🔍</span>
+          <input
+            type="text"
+            id="search-input"
+            class="search-input"
+            placeholder="Search articles across titles, content, tags..."
+            autocomplete="off"
+          />
+        </div>
+
+        <div class="filter-container" id="filter-container">
+          <button class="filter-pill active" data-category="All">All</button>
+          <button class="filter-pill" data-category="AI & Vision">
+            AI & Vision
+          </button>
+          <button class="filter-pill" data-category="CSS Grid">CSS Grid</button>
+          <button class="filter-pill" data-category="HTML & A11y">
+            HTML & A11y
+          </button>
+          <button class="filter-pill" data-category="Clean Code">
+            Clean Code
+          </button>
+          <button class="filter-pill" data-category="Full-Stack & Edge">
+            Full-Stack & Edge
+          </button>
+          <button class="filter-pill" data-category="UI/UX & Design">
+            UI/UX & Design
+          </button>
+        </div>
+      </div>
+
+      <!-- Meta Bar -->
+      <div class="meta-bar">
+        <span id="results-count">Showing <strong>6</strong> articles</span>
+        <span>Real-time search & filtering active</span>
+      </div>
+
+      <!-- Article Grid -->
+      <div class="article-grid" id="article-grid">
+        <!-- Dynamically populated -->
+      </div>
+    </div>
+
+    <!-- Reader Modal -->
+    <div class="modal-overlay" id="modal-overlay">
+      <div class="modal-container">
+        <button class="modal-close-btn" id="modal-close-btn">&times;</button>
+        <div id="modal-inner-content">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // 100% Syntax-Safe Vanilla JavaScript Architecture
+      document.addEventListener("DOMContentLoaded", function () {
+        // Article Database Array
+        const articles = [
+          {
+            id: 1,
+            title: "The AI Revolution & Vision Models (YOLO & Computer Vision)",
+            category: "AI & Vision",
+            author: "Dr. Alexander Vance",
+            readTime: "10 min read",
+            date: "October 2026",
+            tags: ["AI", "YOLO", "ComputerVision", "DeepLearning"],
+            banner:
+              "https://images.unsplash.com/photo-1677442136019-21780efad99a?auto=format&fit=crop&w=900&q=80",
+            excerpt:
+              "Dive deep into the architecture of modern real-time object detection models like YOLO, exploring convolutional layers, bounding box regression, and neural inference.",
+            fullContent:
+              '\
+                        <h2>The Dawn of Computer Vision & Deep Learning</h2>\
+                        <p>Computer vision has undergone a monumental paradigm shift over the past decade, moving from rigid handcrafted feature extractors like SIFT and HOG to autonomous neural architectures. Modern vision systems achieve superhuman accuracy in object recognition, semantic segmentation, and real-time tracking across diverse industries.</p>\
+                        <p>The core catalyst for this transformation is the Convolutional Neural Network (CNN). By stacking localized filter operations, networks autonomously extract hierarchical features—ranging from low-level edges in early convolutional blocks to complex semantic representations in deep latent spaces.</p>\
+                        <img src="https://images.unsplash.com/photo-1555255707-c07966088b7b?auto=format&fit=crop&w=1200&q=80" alt="Artificial Intelligence Neural Network" style="width:100%; border-radius:12px; margin: 1.5rem 0;">\
+                        <h2>The Architecture of YOLO</h2>\
+                        <p>While regional proposal networks achieved high detection accuracy in early deep learning milestones, their multi-stage processing pipelines were notoriously slow for real-time video feeds. Enter YOLO (You Only Look Once), which reframed object detection as a single regression problem directly mapping image pixels to bounding box coordinates and class probabilities.</p>\
+                        <p>By processing the entire image in a single forward pass, YOLO eliminates the need for separate proposal generation steps, achieving blazing inference speeds without sacrificing localization precision.</p>\
+                        <h3>Key Architectural Innovations in Modern YOLO</h3>\
+                        <ul>\
+                            <li><strong>Single Forward Pass Regression:</strong> Divides the input image into an S×S grid where each grid cell predicts bounding boxes and confidence scores simultaneously.</li>\
+                            <li><strong>Unified Multi-Task Loss Functions:</strong> Combines classification loss, localization error, and confidence penalties into a single differentiable optimization objective.</li>\
+                            <li><strong>Anchor-Free Detection Heads:</strong> Modern iterations eliminate predefined anchor boxes in favor of direct point-based object center regression.</li>\
+                        </ul>\
+                        <p>Training state-of-the-art vision models requires rigorous data augmentation, mixed-precision floating-point arithmetic, and extensive hyperparameter tuning across distributed GPU clusters.</p>\
+                        <pre>import torch\nimport torch.nn as nn\n\nclass YOLOHead(nn.Module):\n    def __init__(self, in_channels, num_classes):\n        super().__init__()\n        self.conv = nn.Conv2d(in_channels, num_classes + 5, kernel_size=1)\n    def forward(self, x):\n        return self.conv(x)</pre>\
+                        <p>As edge AI accelerators and quantized transformer backbones continue to advance, real-time computer vision is becoming ubiquitous in autonomous robotics, medical diagnostics, and smart infrastructure.</p>\
+                        <blockquote>"YOLO revolutionized computer vision by proving that high inference speed and state-of-the-art accuracy are not mutually exclusive engineering goals."</blockquote>\
+                    ',
+          },
+          {
+            id: 2,
+            title: "Mastering CSS Grid & Modern Responsive Layout Architecture",
+            category: "CSS Grid",
+            author: "Elena Rostova",
+            readTime: "8 min read",
+            date: "October 2026",
+            tags: ["CSS", "Grid", "Flexbox", "Responsive"],
+            banner:
+              "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=900&q=80",
+            excerpt:
+              "Master two-dimensional CSS Grid layouts, auto-fit tracks, subgrids, and advanced responsive design patterns for high-performance web applications.",
+            fullContent:
+              '\
+                        <h2>Introduction to Modern Layout Systems</h2>\
+                        <p>For decades, web developers relied on fragile layout techniques involving floats, clearing hacks, and absolute positioning. The advent of Flexbox and CSS Grid revolutionized frontend engineering, providing robust, native layout engines designed specifically for the modern multi-device web ecosystem.</p>\
+                        <p>Understanding when to use Flexbox versus CSS Grid is the hallmark of an expert frontend architect. While Flexbox excels at distributing space along a single axis (either row or column), CSS Grid provides powerful two-dimensional control over both rows and columns simultaneously.</p>\
+                        <img src="https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?auto=format&fit=crop&w=1200&q=80" alt="Web Layout Design Systems" style="width:100%; border-radius:12px; margin: 1.5rem 0;">\
+                        <h2>Advanced Grid Techniques & Responsive Tracks</h2>\
+                        <p>CSS Grid enables developers to define complex structural layouts with minimal declarative CSS. By leveraging fractional units (`fr`), auto-fit repetition, and explicit track sizing, interfaces adapt fluidly to any viewport dimension without relying on heavy JavaScript resize listeners.</p>\
+                        <p>Furthermore, CSS Subgrid allows nested child elements to align directly with their parent grid tracks, ensuring pristine visual rhythm across deeply nested component hierarchies.</p>\
+                        <h3>Key Layout Principles & Best Practices</h3>\
+                        <ul>\
+                            <li><strong>Macro vs Micro Layouts:</strong> Use CSS Grid for overall page architecture and section placement; reserve Flexbox for alignment within smaller component internals.</li>\
+                            <li><strong>Dynamic Track Sizing:</strong> Combine `minmax()` with `auto-fit` to create self-reflowing card grids without media query breakpoints.</li>\
+                            <li><strong>Gap Management:</strong> Utilize native `gap` properties to maintain consistent spacing gutters across all screen sizes.</li>\
+                        </ul>\
+                        <p>Writing resilient CSS also involves embracing logical properties (`inline-size`, `block-size`) to ensure seamless multilingual support for RTL (Right-to-Left) reading layouts.</p>\
+                        <pre>.master-grid {\n    display: grid;\n    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));\n    gap: 2rem;\n    align-content: start;\n}</pre>\
+                        <p>Mastering these layout engines empowers engineering teams to build accessible, fluid, and lightning-fast user interfaces that delight users on every device.</p>\
+                        <blockquote>"Combining CSS Grid for macro-layout structure with Flexbox for micro-component alignment creates an unstoppable layout toolkit for modern web developers."</blockquote>\
+                    ',
+          },
+          {
+            id: 3,
+            title:
+              "Semantic HTML5, ARIA Attributes, and Web Accessibility (a11y)",
+            category: "HTML & A11y",
+            author: "Marcus Chen",
+            readTime: "9 min read",
+            date: "September 2026",
+            tags: ["Accessibility", "HTML5", "ARIA", "WCAG"],
+            banner:
+              "https://images.unsplash.com/photo-1573164713988-8665fc963095?auto=format&fit=crop&w=900&q=80",
+            excerpt:
+              "An exhaustive guide to building WCAG-compliant digital experiences using semantic HTML5 landmark elements, robust ARIA attributes, and keyboard navigation.",
+            fullContent:
+              '\
+                        <h2>The Imperative of Web Accessibility</h2>\
+                        <p>The web is fundamentally designed to be inclusive and universally accessible. Web Accessibility (commonly abbreviated as a11y) ensures that individuals with visual, auditory, motor, or cognitive disabilities can perceive, understand, navigate, and interact with web applications effectively.</p>\
+                        <p>Achieving WCAG (Web Content Accessibility Guidelines) compliance is not an optional afterthought or compliance checkbox; it is a core engineering standard that elevates code quality, SEO performance, and usability for all human beings.</p>\
+                        <img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=1200&q=80" alt="Web Accessibility and Inclusion" style="width:100%; border-radius:12px; margin: 1.5rem 0;">\
+                        <h2>Semantic HTML5 as the Indispensable Foundation</h2>\
+                        <p>Assistive technologies, such as screen readers and switch devices, rely heavily on native HTML semantics to construct an accurate accessibility tree. Using correct tags provides built-in keyboard navigation, focus management, and structural context.</p>\
+                        <p>Relying on generic `&lt;div&gt;` or `&lt;span&gt;` elements for interactive UI components forces developers to manually reinvent native browser behaviors, frequently introducing accessibility bugs and fragile custom scripts.</p>\
+                        <h3>Essential Accessibility Standards</h3>\
+                        <ul>\
+                            <li><strong>Landmark Elements:</strong> Always structure pages using semantic landmarks including `&lt;header&gt;`, `&lt;nav&gt;`, `&lt;main&gt;`, `&lt;aside&gt;`, and `&lt;footer&gt;`.</li>\
+                            <li><strong>Heading Hierarchy:</strong> Maintain a strict sequential heading order (`&lt;h1&gt;` through `&lt;h6&gt;`) without skipping heading levels.</li>\
+                            <li><strong>ARIA Attributes:</strong> Use ARIA roles and states (`aria-expanded`, `aria-live`, `aria-label`) only when native semantic elements are insufficient.</li>\
+                        </ul>\
+                        <p>Keyboard accessibility is paramount: all interactive elements must be reachable via the `Tab` key, exhibit clear visual focus rings, and support activation via `Enter` and `Space` keys.</p>\
+                        <pre>&lt;nav aria-label="Main Navigation"&gt;\n    &lt;ul role="menubar"&gt;\n        &lt;li role="none"&gt;&lt;a href="#home" role="menuitem"&gt;Home&lt;/a&gt;&lt;/li&gt;\n    &lt;ul&gt;\n&lt;/nav&gt;</pre>\
+                        <p>By embedding accessibility audits directly into automated CI/CD testing pipelines, engineering teams can catch regressions early and foster an inclusive digital culture.</p>\
+                        <blockquote>"Building accessible software expands your product\'s global reach and embodies the finest traditions of thoughtful, empathetic engineering."</blockquote>\
+                    ',
+          },
+          {
+            id: 4,
+            title: "Clean Code Engineering in Modern JavaScript & Python",
+            category: "Clean Code",
+            author: "Sarah Jenkins",
+            readTime: "10 min read",
+            date: "August 2026",
+            tags: ["CleanCode", "JavaScript", "Python", "SOLID"],
+            banner:
+              "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=900&q=80",
+            excerpt:
+              "Explore SOLID principles, pure functions, immutable data patterns, and maintainable software architecture across JavaScript and Python ecosystems.",
+            fullContent:
+              '\
+                        <h2>The Philosophy of Maintainable Software</h2>\
+                        <p>Programs are read far more often than they are initially written. As software systems scale in complexity and team size, maintaining clean, readable, and modular codebases becomes the single greatest determinant of long-term engineering success and velocity.</p>\
+                        <p>Clean code is self-documenting, adheres to established design patterns, and follows the fundamental software engineering tenets: DRY (Don\'t Repeat Yourself), KISS (Keep It Simple, Stupid), and YAGNI (You Aren\'t Gonna Need It).</p>\
+                        <img src="https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=1200&q=80" alt="Clean Code Programming" style="width:100%; border-radius:12px; margin: 1.5rem 0;">\
+                        <h2>Applying SOLID Principles in Dynamic Languages</h2>\
+                        <p>While SOLID principles originated in statically typed object-oriented languages, their core philosophies apply universally to JavaScript and Python. Embracing single responsibility and modular dependency injection prevents tight coupling.</p>\
+                        <p>Functions should be small, do one thing well, and avoid mutating external state. Pure functions make unit testing trivial and eliminate unpredictable side effects across asynchronous execution flows.</p>\
+                        <h3>Key Clean Code Practices</h3>\
+                        <ul>\
+                            <li><strong>Single Responsibility Principle:</strong> A function, class, or module should have one, and only one, reason to change.</li>\
+                            <li><strong>Meaningful Naming:</strong> Use descriptive, intention-revealing variable and function names rather than cryptic abbreviations.</li>\
+                            <li><strong>Defensive Error Handling:</strong> Validate inputs early, throw explicit descriptive errors, and avoid silent failures.</li>\
+                        </ul>\
+                        <p>Code reviews, automated linters (`ESLint`, `Ruff`), and strict type checking (`TypeScript`, Python type hints) act as guardrails maintaining high codebase standards.</p>\
+                        <pre>const calculateOrderTotal = (items, taxRate) => {\n    const subtotal = items.reduce((sum, item) => sum + item.price, 0);\n    return Number((subtotal * (1 + taxRate)).toFixed(2));\n};</pre>\
+                        <p>Cultivating craftsmanship in daily coding habits transforms software engineering from a tedious chore into an elegant, scalable art form.</p>\
+                        <blockquote>"Any fool can write code that a computer can understand. Good programmers write code that humans can understand." — Martin Fowler</blockquote>\
+                    ',
+          },
+          {
+            id: 5,
+            title: "The Future of Full-Stack Web Development & Edge Computing",
+            category: "Full-Stack & Edge",
+            author: "David K. Vance",
+            readTime: "9 min read",
+            date: "October 2026",
+            tags: ["FullStack", "EdgeComputing", "Cloudflare", "Serverless"],
+            banner:
+              "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=900&q=80",
+            excerpt:
+              "Discover how edge computing, distributed serverless runtimes, and local-first data synchronization are redefining full-stack web application architecture.",
+            fullContent:
+              '\
+                        <h2>The Paradigm Shift to Distributed Edge Computing</h2>\
+                        <p>For decades, full-stack web applications relied on centralized origin servers housed in specific geographic data centers. While effective, this model introduced network latency for users located thousands of miles away from the host server.</p>\
+                        <p>Edge computing shatters this centralization constraint by deploying serverless compute runtimes to hundreds of data center locations globally, executing backend logic mere milliseconds away from the end user\'s browser.</p>\
+                        <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80" alt="Edge Computing and Cloud Architecture" style="width:100%; border-radius:12px; margin: 1.5rem 0;">\
+                        <h2>Local-First Software & Data Synchronization</h2>\
+                        <p>Coupled with edge runtimes, the local-first software movement prioritizes client-side data storage backed by Conflict-free Replicated Data Types (CRDTs). Users can interact with applications instantly offline, with background synchronization reconciling changes seamlessly across devices.</p>\
+                        <p>This architecture eliminates loading spinners, provides buttery-smooth user experiences, and ensures applications remain fully functional even during intermittent network outages.</p>\
+                        <h3>Core Pillars of Modern Full-Stack Architecture</h3>\
+                        <ul>\
+                            <li><strong>Edge Middleware:</strong> Execute authentication, A/B testing, and geo-routing at CDN edge nodes before reaching origin databases.</li>\
+                            <li><strong>Distributed SQL Databases:</strong> Utilize globally replicated databases with strong consistency guarantees across multiple regions.</li>\
+                            <li><strong>Serverless Functions:</strong> Scale compute resources dynamically from zero to millions of requests without manual infrastructure provisioning.</li>\
+                        </ul>\
+                        <p>Building full-stack systems at the edge requires rethinking traditional caching layers, environment secrets management, and database connection pooling.</p>\
+                        <pre>addEventListener(\'fetch\', event => {\n    event.respondWith(handleRequest(event.request));\n});\n\nasync function handleRequest(request) {\n    return new Response(\'Hello from the Edge!\', { status: 200 });\n}</pre>\
+                        <p>As developer tooling matures, edge-native full-stack development will become the default standard for high-performance, globally resilient web applications.</p>\
+                        <blockquote>"Computing is no longer tied to a single server rack; it lives everywhere simultaneously at the edge of the network."</blockquote>\
+                    ',
+          },
+          {
+            id: 6,
+            title: "UI/UX Design Systems & Micro-Interactions in Dark Mode",
+            category: "UI/UX & Design",
+            author: "Chloe St. Laurent",
+            readTime: "8 min read",
+            date: "October 2026",
+            tags: ["UIUX", "DesignSystems", "DarkMode", "MicroInteractions"],
+            banner:
+              "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=900&q=80",
+            excerpt:
+              "Craft immersive dark mode interfaces with sophisticated glassmorphic styling, accessible contrast ratios, and delightful micro-interactions.",
+            fullContent:
+              '\
+                        <h2>The Art and Science of Dark Mode Design</h2>\
+                        <p>Dark mode has transitioned from a niche developer preference into an essential UX standard across modern operating systems and enterprise applications. Designing effective dark interfaces requires more than simply inverting colors from black to white.</p>\
+                        <p>A sophisticated dark theme relies on nuanced tonal layering, precise luminance hierarchies, and vibrant accent glows to create depth and spatial awareness without causing eye strain in low-light environments.</p>\
+                        <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80" alt="UI/UX Dark Mode Design Systems" style="width:100%; border-radius:12px; margin: 1.5rem 0;">\
+                        <h2>Glassmorphic Styling & Elevation Layers</h2>\
+                        <p>Glassmorphic design combines frosted backdrop filters (`backdrop-filter: blur`), semi-transparent background fills, and subtle border highlights to create translucent UI cards that float effortlessly above ambient background glows.</p>\
+                        <p>Elevation is communicated through subtle lightness variations: elements closest to the user feature lighter surface tints and softer drop shadows, mirroring real-world lighting physics.</p>\
+                        <h3>Key Principles of Immersive UI Design</h3>\
+                        <ul>\
+                            <li><strong>Tonal Elevation:</strong> Never use pure #000000 black everywhere; use layered dark slate tones (#0b0f17, #121824, #1e293b) to establish depth.</li>\
+                            <li><strong>Accessible Contrast:</strong> Ensure text elements achieve WCAG AAA contrast ratios against dark backgrounds to maintain readability.</li>\
+                            <li><strong>Delightful Micro-Interactions:</strong> Use subtle scale transforms, smooth easing curves, and color transitions for button hovers and modal openings.</li>\
+                        </ul>\
+                        <p>Micro-interactions provide immediate visual feedback to user actions, transforming static interfaces into responsive, living digital products.</p>\
+                        <pre>.glass-card {\n    background: rgba(22, 27, 34, 0.85);\n    backdrop-filter: blur(12px);\n    border: 1px solid rgba(255, 255, 255, 0.08);\n    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);\n}</pre>\
+                        <p>When design systems and engineering codebases share a unified token vocabulary, teams can ship cohesive, beautiful, and accessible user experiences at scale.</p>\
+                        <blockquote>"Design is not just what it looks like and feels like. Design is how it works, responds, and connects with the human user."</blockquote>\
+                    ',
+          },
+        ];
+
+        // DOM Elements
+        const gridEl = document.getElementById("article-grid");
+        const searchInput = document.getElementById("search-input");
+        const filterContainer = document.getElementById("filter-container");
+        const resultsCount = document.getElementById("results-count");
+        const modalOverlay = document.getElementById("modal-overlay");
+        const modalCloseBtn = document.getElementById("modal-close-btn");
+        const modalInnerContent = document.getElementById(
+          "modal-inner-content",
+        );
+
+        let currentCategory = "All";
+        let currentQuery = "";
+
+        // Render Articles Function
+        function renderArticles() {
+          if (!gridEl) return;
+          const query = (currentQuery || "").toLowerCase().trim();
+
+          const filtered = articles.filter((article) => {
+            const matchesCategory =
+              currentCategory === "All" || article.category === currentCategory;
+            if (!matchesCategory) return false;
+            if (!query) return true;
+
+            const haystack = (
+              article.title +
+              " " +
+              article.excerpt +
+              " " +
+              article.fullContent +
+              " " +
+              article.category +
+              " " +
+              article.tags.join(" ")
+            ).toLowerCase();
+
+            return haystack.includes(query);
+          });
+
+          if (resultsCount) {
+            resultsCount.innerHTML =
+              "Showing <strong>" +
+              filtered.length +
+              "</strong> of " +
+              articles.length +
+              " articles";
+          }
+
+          if (filtered.length === 0) {
+            gridEl.innerHTML =
+              '\
+                        <div class="empty-state">\
+                            <h3>No matching articles found</h3>\
+                            <p>Try searching for terms like "YOLO", "Grid", "ARIA", "Edge", or "JavaScript".</p>\
+                        </div>\
+                    ';
+            return;
+          }
+
+          let htmlOutput = "";
+          filtered.forEach(function (article, index) {
+            htmlOutput +=
+              '\
+                        <article class="article-card" data-id="' +
+              article.id +
+              '" style="animation: fadeIn 0.4s ease-out ' +
+              index * 0.05 +
+              's;">\
+                            <div class="card-img-banner" style="background-image: url(\'' +
+              article.banner +
+              '\')">\
+                                <span class="card-category-badge">' +
+              article.category +
+              '</span>\
+                            </div>\
+                            <div class="card-body">\
+                                <h3 class="card-title">' +
+              article.title +
+              '</h3>\
+                                <p class="card-excerpt">' +
+              article.excerpt +
+              '</p>\
+                                <div class="card-tags">\
+                                    ' +
+              article.tags
+                .map((tag) => '<span class="tag">#' + tag + "</span>")
+                .join("") +
+              '\
+                                </div>\
+                                <div class="card-footer">\
+                                    <span>📅 ' +
+              article.date +
+              " &bull; " +
+              article.readTime +
+              '</span>\
+                                    <span class="read-link">Read Article &rarr;</span>\
+                                </div>\
+                            </div>\
+                        </article>\
+                    ';
+          });
+
+          gridEl.innerHTML = htmlOutput;
+
+          // Attach Click Listeners to Cards
+          const cards = gridEl.querySelectorAll(".article-card");
+          cards.forEach(function (card) {
+            card.addEventListener("click", function () {
+              const id = Number(card.getAttribute("data-id"));
+              const found = articles.find((a) => a.id === id);
+              if (found) {
+                openModal(found);
+              }
+            });
+          });
+        }
+
+        // Open Modal
+        function openModal(article) {
+          if (!modalOverlay || !modalInnerContent) return;
+          modalInnerContent.innerHTML =
+            '\
+                    <div class="modal-header">\
+                        <div class="modal-meta">\
+                            <span class="card-category-badge" style="position:static;">' +
+            article.category +
+            "</span>\
+                            <span>📅 " +
+            article.date +
+            "</span>\
+                            <span>⏱️ " +
+            article.readTime +
+            "</span>\
+                            <span>👤 " +
+            article.author +
+            '</span>\
+                        </div>\
+                        <h2 class="modal-title">' +
+            article.title +
+            '</h2>\
+                        <div class="card-tags">\
+                            ' +
+            article.tags
+              .map((tag) => '<span class="tag">#' + tag + "</span>")
+              .join("") +
+            '\
+                        </div>\
+                    </div>\
+                    <div class="modal-content">\
+                        ' +
+            article.fullContent +
+            "\
+                    </div>\
+                ";
+          modalOverlay.classList.add("open");
+          document.body.style.overflow = "hidden";
+        }
+
+        // Close Modal
+        function closeModal() {
+          if (!modalOverlay) return;
+          modalOverlay.classList.remove("open");
+          document.body.style.overflow = "auto";
+        }
+
+        // Event Listeners for Search & Filters
+        if (searchInput) {
+          searchInput.addEventListener("input", function (e) {
+            currentQuery = e.target.value;
+            renderArticles();
+          });
+        }
+
+        if (filterContainer) {
+          filterContainer.addEventListener("click", function (e) {
+            const pill = e.target.closest(".filter-pill");
+            if (pill) {
+              const pills = filterContainer.querySelectorAll(".filter-pill");
+              pills.forEach((p) => p.classList.remove("active"));
+              pill.classList.add("active");
+              currentCategory = pill.getAttribute("data-category") || "All";
+              renderArticles();
+            }
+          });
+        }
+
+        if (modalCloseBtn) {
+          modalCloseBtn.addEventListener("click", closeModal);
+        }
+
+        if (modalOverlay) {
+          modalOverlay.addEventListener("click", function (e) {
+            if (e.target === modalOverlay) {
+              closeModal();
+            }
+          });
+        }
+
+        document.addEventListener("keydown", function (e) {
+          if (e.key === "Escape") {
+            closeModal();
+          }
+        });
+
+        // Initial Execution
+        renderArticles();
+      });
+    </script>
+  </body>
+</html>
